@@ -1,7 +1,8 @@
+name: CI/CD
+
 env:
   REGISTRY: ghcr.io
-
-name: CI/CD
+  IMAGE_NAME: clumpapp/clump-be
 
 # Controls when the workflow will run
 on:
@@ -33,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ github.repository }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/:latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
