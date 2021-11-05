@@ -1,6 +1,5 @@
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: clump-be
 
 name: CI/CD
 
@@ -34,7 +33,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ github.repository }}:latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
