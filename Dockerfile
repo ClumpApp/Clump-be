@@ -1,7 +1,7 @@
 FROM scratch
 
 WORKDIR /
-COPY ~/clump /clump
+COPY /home/runner/work/clump-be/clump-be/clump /clump
 
 EXPOSE 8080
 
