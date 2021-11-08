@@ -1,21 +1,7 @@
-##
-## Build
-##
-FROM golang:1.17.2 AS build
-
-WORKDIR /go/src/app
-COPY . .
-
-RUN go mod download
-RUN go build -o /clump
-
-##
-## Deploy
-##
-FROM ubuntu AS deploy
+FROM scratch
 
 WORKDIR /
-COPY --from=build /clump /clump
+COPY ./clump /clump
 
 EXPOSE 8080
 
