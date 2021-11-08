@@ -1,17 +1,17 @@
 package main
 
 import (
-	"github.com/gofiber/fiber/v2"
-	_ "gorm.io/driver/sqlite"
-	_ "gorm.io/gorm"
+	"clump/api"
+	"clump/database"
+	"clump/service"
 )
 
 func main() {
-	app := fiber.New()
+	db := database.New()
+	db.Connect()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
+	s := service.New(db)
+	a := api.New(s)
 
-	app.Listen(":8080")
+	a.Run()
 }
