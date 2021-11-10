@@ -1,6 +1,8 @@
 package database
 
 import (
+	"clump/model"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -18,6 +20,28 @@ func (obj *Database) Connect() {
 	obj.gormDB = db
 }
 
-func (obj *Database) Initialize() {
+func (obj *Database) Migrate() {
+	obj.gormDB.AutoMigrate(
+		&model.User{},
+	)
+}
 
+func (obj *Database) Create(model, objects interface{}) {
+	obj.gormDB.Model(model).Create(objects)
+}
+
+func (obj *Database) Read(model, ID, object interface{}) {
+	obj.gormDB.Model(model).Where(ID).First(object)
+}
+
+func (obj *Database) Query(model, query, objects interface{}) {
+	obj.gormDB.Model(model).Where(query).Find(objects)
+}
+
+func (obj *Database) Update(model, query, object interface{}) {
+	obj.gormDB.Model(model).Where(query).Updates(object)
+}
+
+func (obj *Database) Delete(model, query interface{}) {
+	obj.gormDB.Where(query).Delete(model)
 }

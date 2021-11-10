@@ -9,6 +9,7 @@ import (
 func main() {
 	db := database.New()
 	db.Connect()
+	//db.Migrate()
 
 	s := service.New(db)
 	a := api.New(s)
