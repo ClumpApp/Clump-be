@@ -10,20 +10,26 @@ type User struct {
 	gorm.Model
 	Name           string
 	ProfilePicture string
-	Interest       []Interest
-	GroupID        uint
-	UserGroups     []UserGroups
-	Message        []Message
 	UserName       string
 	UserMail       string
-	PasswordHash   string
+	Password       string
+	UserInterests  []UserInterests
+	GroupID        uint
+	UserGroups     []UserGroups
+	Messages       []Message
 }
 
 type Interest struct {
 	gorm.Model
-	UserID  uint
-	Title   string
-	Picture string
+	Title         string
+	Picture       string
+	UserInterests []UserInterests
+}
+
+type UserInterests struct {
+	gorm.Model
+	UserID     uint
+	InterestID uint
 }
 
 type Group struct {

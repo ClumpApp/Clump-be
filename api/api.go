@@ -2,6 +2,7 @@ package api
 
 import (
 	"clump/middleware"
+	"clump/model"
 	"clump/service"
 
 	"github.com/gofiber/fiber/v2"
@@ -24,9 +25,7 @@ func (obj *API) Run() {
 		return c.JSON(fiber.Map{"Hello": "World!"})
 	})
 
-	app.Get("/login", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"token": middleware.GetToken("clump")})
-	})
+	app.Post("/login", obj.login)
 
 	app.Use(middleware.GetJWTMiddleware())
 
@@ -38,4 +37,15 @@ func (obj *API) Run() {
 	})
 
 	app.Listen(":8080")
+}
+
+func (obj *API) login(c *fiber.Ctx) error {
+	var loginDTO model.LoginDTO
+	if err := c.BodyParser(&loginDTO); err != nil {
+		return err
+	}
+	if obj.service.Login(loginDTO) {
+		return c.JSON(fiber.Map{"token": middleware.GetToken(loginDTO.UserName)})
+	}
+	return c.SendStatus(fiber.StatusUnauthorized)
 }
