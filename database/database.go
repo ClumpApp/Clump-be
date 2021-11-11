@@ -22,7 +22,11 @@ func (obj *Database) Connect() {
 
 func (obj *Database) Migrate() {
 	obj.gormDB.AutoMigrate(
-		&model.User{},
+		&model.UserProfile{},
+		&model.UserAccount{},
+		&model.Chatroom{},
+		&model.Message{},
+		&model.Message{},
 	)
 }
 
