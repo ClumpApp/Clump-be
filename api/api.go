@@ -18,6 +18,8 @@ func New(service *service.Service) *API {
 func (obj *API) Run() {
 	app := fiber.New()
 
+	app.Use(middleware.GetCORSMiddleware())
+
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"Hello": "World!"})
 	})
@@ -29,7 +31,7 @@ func (obj *API) Run() {
 	app.Use(middleware.GetJWTMiddleware())
 
 	// Currently using Authorization header for token
-	// What should be used will be decided with according to front-end 
+	// What should be used will be decided with according to front-end
 	app.Get("/restricted", func(c *fiber.Ctx) error {
 		name := middleware.GetClaim(c.Locals("user"))
 		return c.SendString("Welcome " + name)
