@@ -22,7 +22,6 @@ type Account struct {
 	UserName     string
 	UserMail     string
 	PasswordHash string
-	PasswordSalt string
 }
 
 type Interest struct {
