@@ -14,14 +14,9 @@ type User struct {
 	GroupID        uint
 	UserGroups     []UserGroups
 	Message        []Message
-}
-
-type Account struct {
-	gorm.Model
-	UserID       uint
-	UserName     string
-	UserMail     string
-	PasswordHash string
+	UserName       string
+	UserMail       string
+	PasswordHash   string
 }
 
 type Interest struct {
@@ -52,5 +47,4 @@ type Message struct {
 	GroupID     uint
 	MessageType string
 	Message     string
-	SentDate    time.Time
 }
