@@ -28,5 +28,12 @@ func (obj *API) Run() {
 
 	app.Use(middleware.GetJWTMiddleware())
 
+	// Currently using Authorization header for token
+	// What should be used will be decided with according to front-end 
+	app.Get("/restricted", func(c *fiber.Ctx) error {
+		name := middleware.GetClaim(c.Locals("user"))
+		return c.SendString("Welcome " + name)
+	})
+
 	app.Listen(":8080")
 }

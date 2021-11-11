@@ -30,3 +30,9 @@ func GetToken(name string) string {
 
 	return t
 }
+
+func GetClaim(token interface{}) string {
+	user := token.(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	return claims["name"].(string)
+}
