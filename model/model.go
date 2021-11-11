@@ -6,39 +6,51 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserProfile struct {
+type User struct {
 	gorm.Model
-	UserID     int
-	Username   string
-	ChatroomID int
-	EnteryDate time.Time
+	Name           string
+	ProfilePicture string
+	Interest       []Interest
+	GroupID        uint
+	UserGroups     []UserGroups
+	Message        []Message
 }
 
-type Chatroom struct {
+type Account struct {
 	gorm.Model
-	ChatroomID   int
-	Name         string
-	Participants []int
-	IsOpen       bool
-	Interests    []string
-}
-
-type UserAccount struct {
-	gorm.Model
-	UserID       int
-	Username     string
-	Password     int
-	PasswordHash int
+	UserID       uint
+	UserName     string
 	UserMail     string
+	PasswordHash string
 	PasswordSalt string
-	AccountType  string
+}
+
+type Interest struct {
+	gorm.Model
+	UserID  uint
+	Title   string
+	Picture string
+}
+
+type Group struct {
+	gorm.Model
+	Users      []User
+	UserGroups []UserGroups
+	IsOpen     bool
+	Message    []Message
+}
+
+type UserGroups struct {
+	gorm.Model
+	UserID    uint
+	GroupID   uint
+	EntryDate time.Time
 }
 
 type Message struct {
 	gorm.Model
-	MessageID   int
-	UserID      int
-	ChatroomID  int
+	UserID      uint
+	GroupID     uint
 	MessageType string
 	Message     string
 	SentDate    time.Time
