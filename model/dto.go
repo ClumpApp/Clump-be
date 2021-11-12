@@ -25,7 +25,7 @@ type MessageDTO struct {
 	UserID      uint
 	GroupID     uint
 	MessageType string
-	Message     string
+	MessageText string
 }
 
 type LoginDTO struct {
