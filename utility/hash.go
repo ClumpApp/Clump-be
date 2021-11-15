@@ -1,18 +1,23 @@
 package utility
 
 import (
-	"golang.org/x/crypto/bcrypt"
+	"log"
+
+	"github.com/alexedwards/argon2id"
 )
 
 func GetHash(password string) string {
-	sum, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	hash, err := argon2id.CreateHash(password, argon2id.DefaultParams)
 	if err != nil {
-		return err.Error()
+		log.Fatal(err)
 	}
-	return string(sum)
+	return hash
 }
 
 func CompareHash(password, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
+	match, err := argon2id.ComparePasswordAndHash(password, hash)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return match
 }
