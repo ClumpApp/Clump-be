@@ -59,5 +59,4 @@ func (obj *API) textshare(c *fiber.Ctx) error {
 	}
 	obj.service.TextShare(messageDTO)
 	return c.SendStatus(fiber.StatusOK)
-
 }
