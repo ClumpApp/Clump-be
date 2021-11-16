@@ -1,9 +1,9 @@
 package api
 
 import (
-	"clump/middleware"
-	"clump/model"
-	"clump/service"
+	"github.com/clumpapp/clump-be/middleware"
+	"github.com/clumpapp/clump-be/model"
+	"github.com/clumpapp/clump-be/service"
 
 	"github.com/gofiber/fiber/v2"
 )

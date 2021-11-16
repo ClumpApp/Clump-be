@@ -1,8 +1,8 @@
 package service
 
 import (
-	"clump/model"
-	"clump/utility"
+	"github.com/clumpapp/clump-be/model"
+	"github.com/clumpapp/clump-be/utility"
 )
 
 func (obj *Service) Login(loginDTO model.LoginDTO) bool {

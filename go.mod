@@ -1,4 +1,4 @@
-module clump
+module github.com/clumpapp/clump-be
 
 go 1.17
 

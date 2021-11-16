@@ -1,7 +1,7 @@
 package service
 
 import (
-	"clump/model"
+	"github.com/clumpapp/clump-be/model"
 )
 
 func (obj *Service) TextShare(messageDTO model.MessageDTO) {

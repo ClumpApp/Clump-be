@@ -1,11 +1,11 @@
 package main
 
 import (
-	"clump/api"
-	"clump/database"
-	"clump/model"
-	"clump/service"
-	"clump/utility"
+	"github.com/clumpapp/clump-be/api"
+	"github.com/clumpapp/clump-be/database"
+	"github.com/clumpapp/clump-be/model"
+	"github.com/clumpapp/clump-be/service"
+	"github.com/clumpapp/clump-be/utility"
 )
 
 func main() {

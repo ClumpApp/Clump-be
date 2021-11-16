@@ -1,7 +1,7 @@
 package database
 
 import (
-	"clump/model"
+	"github.com/clumpapp/clump-be/model"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"

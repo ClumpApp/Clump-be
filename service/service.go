@@ -1,7 +1,7 @@
 package service
 
 import (
-	"clump/database"
+	"github.com/clumpapp/clump-be/database"
 )
 
 type Service struct {
