@@ -11,7 +11,7 @@ RUN go build -ldflags="-s" -o /clump
 ##
 ## Containerize
 ##
-FROM ubuntu
+FROM ubuntu:latest
 
 WORKDIR /
 COPY --from=build /clump /clump
