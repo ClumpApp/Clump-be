@@ -38,6 +38,7 @@ type Group struct {
 	UserGroups []UserGroups
 	IsOpen     bool
 	Message    []Message
+	Board      string
 }
 
 type UserGroups struct {
@@ -49,8 +50,9 @@ type UserGroups struct {
 
 type Message struct {
 	gorm.Model
-	UserID      uint
-	GroupID     uint
-	MessageType string
-	MessageText string
+	UserID        uint
+	GroupID       uint
+	MessageType   string
+	MessageText   string
+	MessageEdited bool
 }

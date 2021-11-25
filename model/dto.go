@@ -18,14 +18,16 @@ type InterestDTO struct {
 type GroupDTO struct {
 	ID     uint
 	IsOpen bool
+	Board  string
 }
 
 type MessageDTO struct {
-	ID          uint
-	UserID      uint
-	GroupID     uint
-	MessageType string
-	MessageText string
+	ID            uint
+	UserID        uint
+	GroupID       uint
+	MessageType   string
+	MessageText   string
+	MessageEdited bool
 }
 
 type LoginDTO struct {
