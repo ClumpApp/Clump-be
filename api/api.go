@@ -50,7 +50,7 @@ func (obj *API) Run() {
 
 	api.Patch("/group", obj.updategroup)
 	api.Patch("group/user", obj.updateuser)
-	api.Patch("group/user/message", obj.updateuser)
+	api.Patch("group/user/message", obj.updatemessage)
 
 	api.Delete("/group", obj.deletegroup)
 	api.Delete("/group/user", obj.deleteuser)
@@ -102,15 +102,11 @@ func (obj *API) getmessages(c *fiber.Ctx) error {
 
 func (obj *API) getusers(c *fiber.Ctx) error {
 	var groupDTO model.GroupDTO
-	var userDTO model.UserDTO
 	if err := c.BodyParser(&groupDTO); err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
-	userDTO = obj.service.GetUsers(groupDTO)
-	return c.JSON(fiber.Map{
-		"username": middleware.GetToken(userDTO.UserName),
-		"userpfp":  middleware.GetToken(userDTO.ProfilePicture),
-	})
+	usersDTO := obj.service.GetUsers(groupDTO)
+	return c.JSON(usersDTO)
 
 }
 

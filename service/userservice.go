@@ -2,15 +2,17 @@ package service
 
 import (
 	"github.com/clumpapp/clump-be/model"
-	"gorm.io/gorm"
+	"github.com/clumpapp/clump-be/utility"
 )
 
 func (obj *Service) UpdateUser(userDTO model.UserDTO) {
-	obj.db.Update(&model.User{}, &model.User{Model: gorm.Model{ID: userDTO.ID}}, &userDTO)
+	var user model.User
+	utility.Convert(&userDTO, &user)
+	obj.db.Update(&model.User{}, userDTO.ID, &user)
 }
 
 func (obj *Service) DeleteUser(userDTO model.UserDTO) {
-	obj.db.Delete(&model.User{}, &model.User{Model: gorm.Model{ID: userDTO.ID}})
+	obj.db.Delete(&model.User{}, userDTO.ID)
 }
 
 /* These are unnecessary as we will only be taking DTO struct from the request and can do them all once
