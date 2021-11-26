@@ -16,3 +16,6 @@
 
 # SQLite databases
 *.db
+
+# REST requests
+*.http

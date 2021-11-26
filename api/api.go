@@ -22,6 +22,7 @@ func (obj *API) Run() {
 	app := fiber.New()
 
 	app.Use(middleware.GetCORSMiddleware())
+	app.Use(middleware.GetLimiterMiddleware())
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"Hello": "World!"})
@@ -70,12 +71,21 @@ func (obj *API) NotFound(c *fiber.Ctx) error {
 func (obj *API) login(c *fiber.Ctx) error {
 	var loginDTO model.LoginDTO
 	if err := c.BodyParser(&loginDTO); err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
+		return c.SendStatus(fiber.StatusBadRequest)
 	}
 	if obj.service.Login(loginDTO) {
 		return c.JSON(fiber.Map{"token": middleware.GetToken(loginDTO.UserName)})
 	}
 	return c.SendStatus(fiber.StatusUnauthorized)
+}
+
+func (obj *API) signup(c *fiber.Ctx) error {
+	var userDTO model.UserDTO
+	if err := c.BodyParser(&userDTO); err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+	obj.service.SignUp(userDTO)
+	return c.SendStatus(fiber.StatusOK)
 }
 
 func (obj *API) textshare(c *fiber.Ctx) error {
@@ -153,14 +163,5 @@ func (obj *API) deletemessage(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 	obj.service.DeleteMessage(messageDTO)
-	return c.SendStatus(fiber.StatusOK)
-}
-
-func (obj *API) signup(c *fiber.Ctx) error {
-	var userDTO model.UserDTO
-	if err := c.BodyParser(&userDTO); err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
-	}
-	obj.service.SignUp(userDTO)
 	return c.SendStatus(fiber.StatusOK)
 }
