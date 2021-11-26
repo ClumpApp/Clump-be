@@ -89,15 +89,11 @@ func (obj *API) textshare(c *fiber.Ctx) error {
 
 func (obj *API) getmessages(c *fiber.Ctx) error {
 	var groupDTO model.GroupDTO
-	var messageDTO model.MessageDTO
 	if err := c.BodyParser(&groupDTO); err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
-	messageDTO = obj.service.GetMessages(groupDTO)
-	return c.JSON(fiber.Map{
-		"messagetype": middleware.GetToken(messageDTO.MessageType),
-		"messagetext": middleware.GetToken(messageDTO.MessageText),
-	})
+	messagesDTO := obj.service.GetMessages(groupDTO)
+	return c.JSON(messagesDTO)
 }
 
 func (obj *API) getusers(c *fiber.Ctx) error {
