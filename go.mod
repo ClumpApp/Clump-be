@@ -8,7 +8,7 @@ require (
 	github.com/gofiber/jwt/v3 v3.2.1
 	github.com/golang-jwt/jwt/v4 v4.1.0
 	github.com/jinzhu/copier v0.3.2
-	gorm.io/driver/sqlite v1.2.4
+	gorm.io/driver/sqlite v1.2.6
 	gorm.io/gorm v1.22.3
 )
 
