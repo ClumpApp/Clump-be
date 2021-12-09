@@ -16,6 +16,9 @@ func main() {
 	user := model.User{UserName: "srr", Password: utility.GetHash("123456")}
 	db.Create(&model.User{}, &user)
 
+	group := model.Group{}
+	db.Create(&model.Group{}, &group)
+
 	s := service.New(db)
 	a := api.New(s)
 
