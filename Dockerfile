@@ -1,7 +1,7 @@
 ##
 ## Build
 ##
-FROM golang:1.17.3 AS build
+FROM golang:1.17 AS build
 
 WORKDIR /go/src/app
 COPY . .
@@ -11,7 +11,7 @@ RUN go build -ldflags="-s" -o /clump
 ##
 ## Containerize
 ##
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
 WORKDIR /
 COPY --from=build /clump /clump
