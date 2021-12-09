@@ -5,6 +5,12 @@ import (
 	"github.com/clumpapp/clump-be/utility"
 )
 
+func (obj *Service) TextShare(messageDTO model.MessageDTO) {
+	var message model.Message
+	utility.Convert(&messageDTO, &message)
+	obj.db.Create(&model.Message{}, &message)
+}
+
 func (obj *Service) UpdateMessage(messageDTO model.MessageDTO) {
 	var message model.User
 	utility.Convert(&messageDTO, &message)

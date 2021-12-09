@@ -5,6 +5,22 @@ import (
 	"github.com/clumpapp/clump-be/utility"
 )
 
+func (obj *Service) Login(loginDTO model.LoginDTO) bool {
+	var login model.LoginDTO
+	obj.db.Query(&model.User{}, &model.User{UserName: loginDTO.UserName}, &login)
+	if login.UserName != "" && login.Password != "" {
+		return utility.CompareHash(loginDTO.Password, login.Password)
+	}
+	return false
+}
+
+//this version doesnt have interests (will be updated)
+func (obj *Service) SignUp(userDTO model.UserDTO) {
+	var user model.User
+	utility.Convert(&userDTO, &user)
+	obj.db.Create(&model.User{}, &user)
+}
+
 func (obj *Service) UpdateUser(userDTO model.UserDTO) {
 	var user model.User
 	utility.Convert(&userDTO, &user)
