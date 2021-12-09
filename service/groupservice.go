@@ -5,28 +5,14 @@ import (
 	"github.com/clumpapp/clump-be/utility"
 )
 
-func (obj *Service) GetMessages(groupDTO model.GroupDTO) []model.MessageDTO {
-	var messagesDTO []model.MessageDTO
-	obj.db.Query(&model.Message{}, &model.Message{GroupID: groupDTO.ID}, &messagesDTO)
-	return messagesDTO
-}
-
-func (obj *Service) GetUsers(groupDTO model.GroupDTO) []model.UserDTO {
-	var usersDTO []model.UserDTO
-	//var group model.GroupDTO
-	//utility.Convert(&groupDTO, &group)
-	obj.db.Query(&model.User{}, &model.User{GroupID: groupDTO.ID}, &usersDTO)
-	return usersDTO
-}
-
-func (obj *Service) UpdateGroup(groupDTO model.GroupDTO) {
-	var group model.User
+func (obj *Service) UpdateGroup(id string, groupDTO model.GroupDTO) {
+	var group model.Group
 	utility.Convert(&groupDTO, &group)
-	obj.db.Update(&model.Group{}, groupDTO.ID, &group)
+	obj.db.Update(&model.Group{}, id, &group)
 }
 
-func (obj *Service) DeleteGroup(groupDTO model.GroupDTO) {
-	obj.db.Delete(&model.Group{}, groupDTO.ID)
+func (obj *Service) DeleteGroup(id string) {
+	obj.db.Delete(&model.Group{}, id)
 }
 
 /*

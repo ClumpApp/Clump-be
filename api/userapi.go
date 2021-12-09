@@ -21,26 +21,30 @@ func (obj *API) login(c *fiber.Ctx) error {
 func (obj *API) signup(c *fiber.Ctx) error {
 	var userDTO model.UserDTO
 	if err := c.BodyParser(&userDTO); err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
+		return c.SendStatus(fiber.StatusBadRequest)
 	}
 	obj.service.SignUp(userDTO)
 	return c.SendStatus(fiber.StatusOK)
 }
 
-func (obj *API) updateuser(c *fiber.Ctx) error {
+func (obj *API) getgroupusers(c *fiber.Ctx) error {
+	id := obj.getID(c)
+	usersDTO := obj.service.GetGroupUsers(id)
+	return c.JSON(usersDTO)
+}
+
+func (obj *API) putuser(c *fiber.Ctx) error {
 	var userDTO model.UserDTO
 	if err := c.BodyParser(&userDTO); err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
+		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}
-	obj.service.UpdateUser(userDTO)
+	id := obj.getID(c)
+	obj.service.UpdateUser(id, userDTO)
 	return c.SendStatus(fiber.StatusOK)
 }
 
 func (obj *API) deleteuser(c *fiber.Ctx) error {
-	var userDTO model.UserDTO
-	if err := c.BodyParser(&userDTO); err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
-	}
-	obj.service.DeleteUser(userDTO)
+	id := obj.getID(c)
+	obj.service.DeleteUser(id)
 	return c.SendStatus(fiber.StatusOK)
 }

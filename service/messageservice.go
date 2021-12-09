@@ -5,19 +5,26 @@ import (
 	"github.com/clumpapp/clump-be/utility"
 )
 
-func (obj *Service) TextShare(messageDTO model.MessageDTO) {
+func (obj *Service) GetGroupMessages(id string) []model.MessageDTO {
+	uid := utility.ConvertID(id)
+	var messagesDTO []model.MessageDTO
+	obj.db.Query(&model.Message{}, &model.Message{GroupID: uid}, &messagesDTO)
+	return messagesDTO
+}
+
+func (obj *Service) CreateMessage(messageDTO model.MessageDTO) {
 	var message model.Message
 	utility.Convert(&messageDTO, &message)
 	obj.db.Create(&model.Message{}, &message)
 }
 
-func (obj *Service) UpdateMessage(messageDTO model.MessageDTO) {
-	var message model.User
+func (obj *Service) UpdateMessage(id string, messageDTO model.MessageDTO) {
+	var message model.Message
 	utility.Convert(&messageDTO, &message)
-	obj.db.Update(&model.Message{}, messageDTO.ID, &messageDTO)
-	obj.db.Update(&model.Message{}, messageDTO.ID, &model.Message{MessageEdited: true})
+	message.MessageEdited = true
+	obj.db.Update(&model.Message{}, id, &messageDTO)
 }
 
-func (obj *Service) DeleteMessage(messageDTO model.MessageDTO) {
-	obj.db.Delete(&model.Message{}, messageDTO.ID)
+func (obj *Service) DeleteMessage(id string) {
+	obj.db.Delete(&model.Message{}, id)
 }

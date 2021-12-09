@@ -28,6 +28,7 @@ func (obj *API) Run() {
 	})
 
 	app.Post("/login", obj.login)
+	app.Post("/signup", obj.signup)
 
 	app.Use(middleware.GetJWTMiddleware())
 
@@ -40,29 +41,32 @@ func (obj *API) Run() {
 		return c.SendString("Welcome " + name)
 	})
 
-	api.Post("/chat", obj.textshare)
-
 	//starting here
-	api.Get("/group/messages", obj.getmessages)
-	api.Get("/group/users", obj.getusers)
 
-	api.Post("/signup", obj.signup)
+	api.Get("/groups/:id/messages", obj.getgroupmessages)
+	api.Get("/groups/:id/users", obj.getgroupusers)
 
-	api.Patch("/group", obj.updategroup)
-	api.Patch("group/user", obj.updateuser)
-	api.Patch("group/user/message", obj.updatemessage)
+	api.Post("/messages", obj.postmessage)
 
-	api.Delete("/group", obj.deletegroup)
-	api.Delete("/group/user", obj.deleteuser)
-	api.Delete("group/user/message", obj.deletemessage)
+	api.Put("/groups/:id", obj.putgroup)
+	api.Put("/users/:id", obj.putuser)
+	api.Put("/messages/:id", obj.putmessage)
+
+	api.Delete("/groups/:id", obj.deletegroup)
+	api.Delete("/users/:id", obj.deleteuser)
+	api.Delete("/messages/:id", obj.deletemessage)
 
 	//ending here
 
-	app.Use(obj.NotFound)
+	app.Use(obj.notFound)
 
 	app.Listen(":8080")
 }
 
-func (obj *API) NotFound(c *fiber.Ctx) error {
+func (obj *API) notFound(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusNotFound).SendString("Hey, there are no friends to make here.")
+}
+
+func (obj *API) getID(c *fiber.Ctx) string {
+	return c.Params("id")
 }

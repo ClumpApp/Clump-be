@@ -34,8 +34,9 @@ func (obj *Database) Create(model, objects interface{}) {
 	obj.gormDB.Model(model).Create(objects)
 }
 
-func (obj *Database) Read(model, ID, object interface{}) {
-	obj.gormDB.Model(model).Where(ID).First(object)
+func (obj *Database) Read(model, ID, object interface{}) bool {
+	res := obj.gormDB.Model(model).Where(ID).First(object)
+	return res.RowsAffected != 0
 }
 
 func (obj *Database) Query(model, query, objects interface{}) {
