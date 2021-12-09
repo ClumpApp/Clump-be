@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/alexedwards/argon2id v0.0.0-20210511081203-7d35d68092b8
-	github.com/gofiber/fiber/v2 v2.22.0
+	github.com/gofiber/fiber/v2 v2.23.0
 	github.com/gofiber/jwt/v3 v3.2.1
 	github.com/golang-jwt/jwt/v4 v4.1.0
 	github.com/jinzhu/copier v0.3.2
