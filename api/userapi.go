@@ -1,7 +1,7 @@
 package api
 
 import (
-	"fmt"
+	"strconv"
 
 	"github.com/clumpapp/clump-be/middleware"
 	"github.com/clumpapp/clump-be/model"
@@ -16,7 +16,9 @@ func (obj *API) login(c *fiber.Ctx) error {
 	}
 	matches, user := obj.service.Login(loginDTO)
 	if matches {
-		token := middleware.GetToken(fmt.Sprintf("%v", user.ID), fmt.Sprintf("%v", user.GroupID))
+		uid := strconv.FormatUint(uint64(user.ID), 10)
+		gid := strconv.FormatUint(uint64(user.GroupID), 10)
+		token := middleware.GetToken(uid, gid)
 		return c.JSON(fiber.Map{"token": token})
 	}
 	return c.SendStatus(fiber.StatusUnauthorized)

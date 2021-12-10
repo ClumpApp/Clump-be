@@ -13,11 +13,11 @@ func main() {
 	db.Connect()
 	db.Migrate()
 
-	user := model.User{UserName: "srr", Password: utility.GetHash("123456")}
-	db.Create(&model.User{}, &user)
-
 	group := model.Group{}
 	db.Create(&model.Group{}, &group)
+
+	user := model.User{UserName: "srr", Password: utility.GetHash("123456"), GroupID: group.ID}
+	db.Create(&model.User{}, &user)
 
 	s := service.New(db)
 	a := api.New(s)
