@@ -7,12 +7,43 @@ import (
 
 func (obj *Service) AddInterests(interests []string, userid uint) {
 	var intr model.Interest
-	var intrs []model.Interest
+	var userintr model.UserInterests
+	var userintrs []model.UserInterests
 	for _, interest := range interests {
+		obj.db.Create(&model.UserInterests{}, &userintr)
 		obj.db.Query(&model.Interest{}, &model.Interest{Title: interest}, &intr)
+		obj.db.Update(&model.UserInterests{}, userintr.ID, &model.UserInterests{UserID: userid, InterestID: intr.ID})
+		userintrs = append(userintrs, userintr)
+	}
+	obj.db.Update(&model.User{}, userid, &model.User{UserInterests: userintrs})
+}
+
+func (obj *Service) FindInterests(userid uint) []model.Interest {
+	var intr model.Interest
+	var intrs []model.Interest
+	var userintrs []model.UserInterests
+	obj.db.Query(&model.User{}, userid, &userintrs)
+	for _, userinterest := range userintrs {
+		obj.db.Query(&model.Interest{}, userinterest.ID, &intr)
 		intrs = append(intrs, intr)
 	}
-	obj.db.Update(&model.User{}, userid, &model.User{UserInterests: intrs})
+	return intrs
+}
+
+func (obj *Service) FindInterestTitles(userid uint) []string {
+	var intr model.Interest
+	var intrtitles []string
+	var userintrs []model.UserInterests
+	obj.db.Query(&model.User{}, userid, &userintrs)
+	for _, userinterest := range userintrs {
+		obj.db.Query(&model.Interest{}, userinterest.ID, &intr)
+		intrtitles = append(intrtitles, intr.Title)
+	}
+	return intrtitles
+}
+
+func (obj *Service) CalculateLevel(groupintrs []string, userintrs []string) {
+
 }
 
 func CalculateInterest() {

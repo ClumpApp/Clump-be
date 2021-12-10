@@ -13,7 +13,7 @@ type User struct {
 	UserName       string
 	UserMail       string
 	Password       string
-	UserInterests  []Interest //tiny bit cheating
+	UserInterests  []UserInterests
 	GroupID        uint
 	UserGroups     []UserGroups
 	Messages       []Message
