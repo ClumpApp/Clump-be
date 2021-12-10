@@ -10,18 +10,20 @@ import (
 const key = "ASE"
 const Group = "group"
 const User = "user"
+const Token = "token"
 
 func GetJWTMiddleware() interface{} {
 	return jwtware.New(jwtware.Config{
-		SigningKey: []byte(key),
+		SigningKey:  []byte(key),
+		TokenLookup: "cookie:" + Token,
 	})
 }
 
 func GetToken(user, group string) string {
 	claims := jwt.MapClaims{
-		User: user,
+		User:  user,
 		Group: group,
-		"exp":  time.Now().Add(time.Hour * 72).Unix(),
+		"exp": time.Now().Add(time.Hour * 72).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

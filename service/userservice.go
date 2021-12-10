@@ -6,11 +6,9 @@ import (
 )
 
 func (obj *Service) Login(loginDTO model.LoginDTO) (bool, model.UserDTO) {
-	var login model.User
-	utility.Convert(&loginDTO, &login)
 	var user model.User
-	found := obj.db.Read(&model.User{}, &login, &user)
-	if found && utility.CompareHash(login.Password, user.Password) {
+	found := obj.db.Read(&model.User{}, &model.User{UserName: loginDTO.UserName}, &user)
+	if found && utility.CompareHash(loginDTO.Password, user.Password) {
 		var out model.UserDTO
 		utility.Convert(&user, &out)
 		return true, out

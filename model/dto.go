@@ -1,7 +1,7 @@
 package model
 
 type UserDTO struct {
-	ID             uint `json:"omitempty"`
+	ID             uint `json:",omitempty"`
 	Name           string
 	ProfilePicture string
 	UserName       string
@@ -10,19 +10,19 @@ type UserDTO struct {
 }
 
 type InterestDTO struct {
-	ID      uint `json:"omitempty"`
+	ID      uint `json:",omitempty"`
 	Title   string
 	Picture string
 }
 
 type GroupDTO struct {
-	ID     uint `json:"omitempty"`
+	ID     uint `json:",omitempty"`
 	IsOpen bool
 	Board  string
 }
 
 type MessageDTO struct {
-	ID            uint `json:"omitempty"`
+	ID            uint `json:",omitempty"`
 	UserID        uint
 	GroupID       uint
 	MessageType   string
