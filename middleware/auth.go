@@ -8,6 +8,8 @@ import (
 )
 
 const key = "ASE"
+const Group = "group"
+const User = "user"
 
 func GetJWTMiddleware() interface{} {
 	return jwtware.New(jwtware.Config{
@@ -15,9 +17,10 @@ func GetJWTMiddleware() interface{} {
 	})
 }
 
-func GetToken(name string) string {
+func GetToken(user, group string) string {
 	claims := jwt.MapClaims{
-		"name": name,
+		User: user,
+		Group: group,
 		"exp":  time.Now().Add(time.Hour * 72).Unix(),
 	}
 
@@ -31,8 +34,14 @@ func GetToken(name string) string {
 	return t
 }
 
-func GetClaim(token interface{}) string {
+func GetGroupID(token interface{}) string {
 	user := token.(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
-	return claims["name"].(string)
+	return claims[Group].(string)
+}
+
+func GetUserID(token interface{}) string {
+	user := token.(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	return claims[User].(string)
 }

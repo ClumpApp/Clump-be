@@ -5,15 +5,17 @@ import (
 	"github.com/clumpapp/clump-be/utility"
 )
 
-func (obj *Service) Login(loginDTO model.LoginDTO) bool {
+func (obj *Service) Login(loginDTO model.LoginDTO) (bool, model.UserDTO) {
 	var login model.User
 	utility.Convert(&loginDTO, &login)
 	var user model.User
 	found := obj.db.Read(&model.User{}, &login, &user)
-	if found {
-		return utility.CompareHash(loginDTO.Password, login.Password)
+	if found && utility.CompareHash(login.Password, user.Password) {
+		var out model.UserDTO
+		utility.Convert(&user, &out)
+		return true, out
 	}
-	return false
+	return false, model.UserDTO{}
 }
 
 //this version doesnt have interests (will be updated)
@@ -23,8 +25,8 @@ func (obj *Service) SignUp(userDTO model.UserDTO) {
 	obj.db.Create(&model.User{}, &user)
 }
 
-func (obj *Service) GetGroupUsers(id string) []model.UserDTO {
-	uid := utility.ConvertID(id)
+func (obj *Service) GetGroupUsers(groupid string) []model.UserDTO {
+	uid := utility.ConvertID(groupid)
 	var usersDTO []model.UserDTO
 	obj.db.Query(&model.User{}, &model.User{GroupID: uid}, &usersDTO)
 	return usersDTO

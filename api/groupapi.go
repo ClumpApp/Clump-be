@@ -11,13 +11,13 @@ func (obj *API) putgroup(c *fiber.Ctx) error {
 	if err := c.BodyParser(&groupDTO); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}
-	id := obj.getID(c)
+	id := obj.getIDFromParam(c)
 	obj.service.UpdateGroup(id, groupDTO)
 	return c.SendStatus(fiber.StatusOK)
 }
 
 func (obj *API) deletegroup(c *fiber.Ctx) error {
-	id := obj.getID(c)
+	id := obj.getIDFromParam(c)
 	obj.service.DeleteGroup(id)
-	return c.SendStatus(fiber.StatusOK)
+	return c.SendStatus(fiber.StatusNoContent)
 }

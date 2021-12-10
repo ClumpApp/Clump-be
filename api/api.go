@@ -37,14 +37,14 @@ func (obj *API) Run() {
 	// Currently using Authorization header for token
 	// What should be used will be decided with according to front-end
 	api.Get("/restricted", func(c *fiber.Ctx) error {
-		name := middleware.GetClaim(c.Locals("user"))
+		name := middleware.GetUserID(c.Locals("user"))
 		return c.SendString("Welcome " + name)
 	})
 
 	//starting here
 
-	api.Get("/groups/:id/messages", obj.getgroupmessages)
-	api.Get("/groups/:id/users", obj.getgroupusers)
+	api.Get("/messages", obj.getgroupmessages)
+	api.Get("/users", obj.getgroupusers)
 
 	api.Post("/messages", obj.postmessage)
 
@@ -67,6 +67,14 @@ func (obj *API) notFound(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusNotFound).SendString("Hey, there are no friends to make here.")
 }
 
-func (obj *API) getID(c *fiber.Ctx) string {
+func (obj *API) getIDFromParam(c *fiber.Ctx) string {
 	return c.Params("id")
+}
+
+func (obj *API) getGroupIDFromToken(c *fiber.Ctx) string {
+	return middleware.GetGroupID(c.Locals("user"))
+}
+
+func (obj *API) getUserIDFromToken(c *fiber.Ctx) string {
+	return middleware.GetUserID(c.Locals("user"))
 }

@@ -7,7 +7,7 @@ import (
 )
 
 func (obj *API) getgroupmessages(c *fiber.Ctx) error {
-	id := obj.getID(c)
+	id := obj.getGroupIDFromToken(c)
 	messagesDTO := obj.service.GetGroupMessages(id)
 	return c.JSON(messagesDTO)
 }
@@ -17,8 +17,10 @@ func (obj *API) postmessage(c *fiber.Ctx) error {
 	if err := c.BodyParser(&messageDTO); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}
-	obj.service.CreateMessage(messageDTO)
-	return c.SendStatus(fiber.StatusOK)
+	gid := obj.getGroupIDFromToken(c)
+	uid := obj.getUserIDFromToken(c)
+	out := obj.service.CreateMessage(gid, uid, messageDTO)
+	return c.Status(fiber.StatusCreated).JSON(out)
 }
 
 func (obj *API) putmessage(c *fiber.Ctx) error {
@@ -26,13 +28,13 @@ func (obj *API) putmessage(c *fiber.Ctx) error {
 	if err := c.BodyParser(&messageDTO); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}
-	id := obj.getID(c)
+	id := obj.getIDFromParam(c)
 	obj.service.UpdateMessage(id, messageDTO)
 	return c.SendStatus(fiber.StatusOK)
 }
 
 func (obj *API) deletemessage(c *fiber.Ctx) error {
-	id := obj.getID(c)
+	id := obj.getIDFromParam(c)
 	obj.service.DeleteMessage(id)
-	return c.SendStatus(fiber.StatusOK)
+	return c.SendStatus(fiber.StatusNoContent)
 }
