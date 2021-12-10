@@ -19,7 +19,7 @@ func (obj *API) login(c *fiber.Ctx) error {
 		uid := strconv.FormatUint(uint64(user.ID), 10)
 		gid := strconv.FormatUint(uint64(user.GroupID), 10)
 		token := middleware.GetToken(uid, gid)
-		c.Cookie(&fiber.Cookie{Name: middleware.Token, Value: token})
+		c.Cookie(&fiber.Cookie{Name: middleware.TokenName, Value: token})
 		c.SendStatus(fiber.StatusOK)
 	}
 	return c.SendStatus(fiber.StatusUnauthorized)

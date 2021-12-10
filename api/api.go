@@ -37,7 +37,7 @@ func (obj *API) Run() {
 	// Currently using Authorization header for token
 	// What should be used will be decided with according to front-end
 	api.Get("/restricted", func(c *fiber.Ctx) error {
-		name := middleware.GetUserID(c.Locals("user"))
+		name := middleware.GetUserID(c.Locals(middleware.ContextKey))
 		return c.SendString("Welcome " + name)
 	})
 
@@ -72,9 +72,9 @@ func (obj *API) getIDFromParam(c *fiber.Ctx) string {
 }
 
 func (obj *API) getGroupIDFromToken(c *fiber.Ctx) string {
-	return middleware.GetGroupID(c.Locals("user"))
+	return middleware.GetGroupID(c.Locals(middleware.ContextKey))
 }
 
 func (obj *API) getUserIDFromToken(c *fiber.Ctx) string {
-	return middleware.GetUserID(c.Locals("user"))
+	return middleware.GetUserID(c.Locals(middleware.ContextKey))
 }

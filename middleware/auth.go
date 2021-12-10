@@ -7,15 +7,20 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-const key = "ASE"
-const Group = "group"
-const User = "user"
-const Token = "token"
+const (
+	key         = "ASE"
+	Group       = "group"
+	User        = "user"
+	TokenSource = "cookie"
+	TokenName   = "token"
+	ContextKey  = "account"
+)
 
 func GetJWTMiddleware() interface{} {
 	return jwtware.New(jwtware.Config{
+		ContextKey:  ContextKey,
 		SigningKey:  []byte(key),
-		TokenLookup: "cookie:" + Token,
+		TokenLookup: TokenSource + ":" + TokenName,
 	})
 }
 
