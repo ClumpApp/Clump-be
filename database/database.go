@@ -28,6 +28,7 @@ func (obj *Database) Migrate() {
 		&model.Message{},
 		&model.IEUserGroup{},
 		&model.IEUserInterest{},
+		&model.IEGroupInterest{},
 	)
 }
 
