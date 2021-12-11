@@ -5,18 +5,17 @@ import (
 	"github.com/clumpapp/clump-be/utility"
 )
 
-func (obj *Service) GetGroupMessages(groupid string) []model.MessageDTO {
-	uid := utility.ConvertID(groupid)
-	var messagesDTO []model.MessageDTO
-	obj.db.Query(&model.Message{}, &model.Message{GroupID: uid}, &messagesDTO)
-	return messagesDTO
+func (obj *Service) GetGroupMessages(groupid float64) []model.MessageDTO {
+	var messageDTOs []model.MessageDTO
+	obj.db.Query(&model.Message{}, &model.Message{GroupID: uint(groupid)}, &messageDTOs)
+	return messageDTOs
 }
 
-func (obj *Service) CreateMessage(group, user string, messageDTO model.MessageDTO) model.MessageDTO {
+func (obj *Service) CreateMessage(groupid, userid float64, messageDTO model.MessageDTO) model.MessageDTO {
 	var message model.Message
 	utility.Convert(&messageDTO, &message)
-	message.GroupID = utility.ConvertID(group)
-	message.UserID = utility.ConvertID(user)
+	message.GroupID = uint(groupid)
+	message.UserID = uint(userid)
 	obj.db.Create(&model.Message{}, &message)
 	var out model.MessageDTO
 	utility.Convert(&message, &out)
@@ -27,9 +26,11 @@ func (obj *Service) UpdateMessage(id string, messageDTO model.MessageDTO) {
 	var message model.Message
 	utility.Convert(&messageDTO, &message)
 	message.MessageEdited = true
-	obj.db.Update(&model.Message{}, id, &messageDTO)
+	uuid := utility.ConvertUUID(id)
+	obj.db.Update(&model.Message{}, &model.Message{UUID: uuid}, &message)
 }
 
 func (obj *Service) DeleteMessage(id string) {
-	obj.db.Delete(&model.Message{}, id)
+	uuid := utility.ConvertUUID(id)
+	obj.db.Delete(&model.Message{}, &model.Message{UUID: uuid})
 }

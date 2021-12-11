@@ -8,11 +8,13 @@ import (
 func (obj *Service) UpdateGroup(id string, groupDTO model.GroupDTO) {
 	var group model.Group
 	utility.Convert(&groupDTO, &group)
-	obj.db.Update(&model.Group{}, id, &group)
+	uuid := utility.ConvertUUID(id)
+	obj.db.Update(&model.Group{}, model.Group{UUID: uuid}, &group)
 }
 
 func (obj *Service) DeleteGroup(id string) {
-	obj.db.Delete(&model.Group{}, id)
+	uuid := utility.ConvertUUID(id)
+	obj.db.Delete(&model.Group{}, model.Group{UUID: uuid})
 }
 
 /*

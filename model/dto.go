@@ -3,30 +3,27 @@ package model
 // IDs should not be exposed to client, UUID should be used
 
 type UserDTO struct {
-	ID             uint `json:",omitempty"`
+	UUID           string `json:",omitempty"`
 	Name           string
 	ProfilePicture string
 	UserName       string
 	UserMail       string
-	GroupID        uint
 }
 
 type InterestDTO struct {
-	ID      uint `json:",omitempty"`
+	UUID    string `json:",omitempty"`
 	Title   string
 	Picture string
 }
 
 type GroupDTO struct {
-	ID     uint `json:",omitempty"`
+	UUID   string `json:",omitempty"`
 	IsOpen bool
 	Board  string
 }
 
 type MessageDTO struct {
-	ID            uint `json:",omitempty"`
-	UserID        uint
-	GroupID       uint
+	UUID          string `json:",omitempty"`
 	MessageType   string
 	MessageText   string
 	MessageEdited bool

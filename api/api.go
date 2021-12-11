@@ -8,6 +8,7 @@ import (
 )
 
 const prefix = "/api/v1"
+const id = "id"
 
 type API struct {
 	service *service.Service
@@ -34,29 +35,18 @@ func (obj *API) Run() {
 
 	api := app.Group(prefix)
 
-	// Currently using Authorization header for token
-	// What should be used will be decided with according to front-end
-	api.Get("/restricted", func(c *fiber.Ctx) error {
-		name := middleware.GetUserID(c.Locals(middleware.ContextKey))
-		return c.SendString("Welcome " + name)
-	})
-
-	//starting here
-
 	api.Get("/messages", obj.getgroupmessages)
 	api.Get("/users", obj.getgroupusers)
 
 	api.Post("/messages", obj.postmessage)
 
-	api.Put("/groups/:id", obj.putgroup)
-	api.Put("/users/:id", obj.putuser)
-	api.Put("/messages/:id", obj.putmessage)
+	api.Put("/groups/:"+id, obj.putgroup)
+	api.Put("/users/:"+id, obj.putuser)
+	api.Put("/messages/:"+id, obj.putmessage)
 
-	api.Delete("/groups/:id", obj.deletegroup)
-	api.Delete("/users/:id", obj.deleteuser)
-	api.Delete("/messages/:id", obj.deletemessage)
-
-	//ending here
+	api.Delete("/groups/:"+id, obj.deletegroup)
+	api.Delete("/users/:"+id, obj.deleteuser)
+	api.Delete("/messages/:"+id, obj.deletemessage)
 
 	app.Use(obj.notFound)
 
@@ -68,13 +58,13 @@ func (obj *API) notFound(c *fiber.Ctx) error {
 }
 
 func (obj *API) getIDFromParam(c *fiber.Ctx) string {
-	return c.Params("id")
+	return c.Params(id)
 }
 
-func (obj *API) getGroupIDFromToken(c *fiber.Ctx) string {
+func (obj *API) getGroupIDFromToken(c *fiber.Ctx) float64 {
 	return middleware.GetGroupID(c.Locals(middleware.ContextKey))
 }
 
-func (obj *API) getUserIDFromToken(c *fiber.Ctx) string {
+func (obj *API) getUserIDFromToken(c *fiber.Ctx) float64 {
 	return middleware.GetUserID(c.Locals(middleware.ContextKey))
 }

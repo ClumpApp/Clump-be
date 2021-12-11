@@ -24,7 +24,7 @@ func GetJWTMiddleware() interface{} {
 	})
 }
 
-func GetToken(user, group string) string {
+func CreateToken(user, group uint) string {
 	claims := jwt.MapClaims{
 		User:  user,
 		Group: group,
@@ -41,14 +41,14 @@ func GetToken(user, group string) string {
 	return t
 }
 
-func GetGroupID(token interface{}) string {
+func GetGroupID(token interface{}) float64 {
 	user := token.(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
-	return claims[Group].(string)
+	return claims[Group].(float64)
 }
 
-func GetUserID(token interface{}) string {
+func GetUserID(token interface{}) float64 {
 	user := token.(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
-	return claims[User].(string)
+	return claims[User].(float64)
 }

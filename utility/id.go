@@ -1,15 +1,10 @@
 package utility
 
 import (
-	"log"
-	"strconv"
+	"github.com/google/uuid"
 )
 
-func ConvertID(id string) uint {
-	res, err := strconv.ParseUint(id, 10, 0)
-	if err != nil {
-		// Should do logging
-		log.Panicln(err)
-	}
-	return uint(res)
+func ConvertUUID(s string) uuid.UUID {
+	res, _ := uuid.Parse(s)
+	return res
 }

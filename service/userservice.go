@@ -5,15 +5,13 @@ import (
 	"github.com/clumpapp/clump-be/utility"
 )
 
-func (obj *Service) Login(loginDTO model.LoginDTO) (bool, model.UserDTO) {
+func (obj *Service) Login(loginDTO model.LoginDTO) (uint, uint, bool) {
 	var user model.User
 	found := obj.db.Read(&model.User{}, &model.User{UserName: loginDTO.UserName}, &user)
 	if found && utility.CompareHash(loginDTO.Password, user.Password) {
-		var out model.UserDTO
-		utility.Convert(&user, &out)
-		return true, out
+		return user.ID, user.GroupID, true
 	}
-	return false, model.UserDTO{}
+	return 0, 0, false
 }
 
 //this version doesnt have interests (will be updated)
@@ -23,21 +21,22 @@ func (obj *Service) SignUp(userDTO model.UserDTO) {
 	obj.db.Create(&model.User{}, &user)
 }
 
-func (obj *Service) GetGroupUsers(groupid string) []model.UserDTO {
-	uid := utility.ConvertID(groupid)
-	var usersDTO []model.UserDTO
-	obj.db.Query(&model.User{}, &model.User{GroupID: uid}, &usersDTO)
-	return usersDTO
+func (obj *Service) GetGroupUsers(groupid float64) []model.UserDTO {
+	var userDTOs []model.UserDTO
+	obj.db.Query(&model.User{}, &model.User{GroupID: uint(groupid)}, &userDTOs)
+	return userDTOs
 }
 
 func (obj *Service) UpdateUser(id string, userDTO model.UserDTO) {
 	var user model.User
 	utility.Convert(&userDTO, &user)
-	obj.db.Update(&model.User{}, id, &user)
+	uuid := utility.ConvertUUID(id)
+	obj.db.Update(&model.User{}, &model.User{UUID: uuid}, &user)
 }
 
 func (obj *Service) DeleteUser(id string) {
-	obj.db.Delete(&model.User{}, id)
+	uuid := utility.ConvertUUID(id)
+	obj.db.Delete(&model.User{}, &model.User{UUID: uuid})
 }
 
 /* These are unnecessary as we will only be taking DTO struct from the request and can do them all once
