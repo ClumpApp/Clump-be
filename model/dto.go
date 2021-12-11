@@ -1,5 +1,7 @@
 package model
 
+// IDs should not be exposed to client, UUID should be used
+
 type UserDTO struct {
 	ID             uint `json:",omitempty"`
 	Name           string

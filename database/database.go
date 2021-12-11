@@ -24,9 +24,10 @@ func (obj *Database) Migrate() {
 	obj.gormDB.AutoMigrate(
 		&model.User{},
 		&model.Group{},
-		&model.UserGroups{},
 		&model.Interest{},
 		&model.Message{},
+		&model.IEUserGroup{},
+		&model.IEUserInterest{},
 	)
 }
 
