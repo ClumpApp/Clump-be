@@ -42,6 +42,7 @@ func (obj *Service) FindInterestTitles(userid uint) []string {
 	return intrtitles
 }
 
+// Calculate using Loss Metric
 func (obj *Service) CalculateLevel(groupintrs []string, userintrs []string) {
 
 }

@@ -21,12 +21,34 @@ type User struct {
 	Messages       []Message
 }
 
+type Group struct {
+	gorm.Model
+	UUID           uuid.UUID `gorm:"type:uuid"`
+	Users          []User
+	UserGroups     []IEUserGroup
+	IsOpen         bool
+	Messages       []Message
+	Board          string
+	GroupInterests []IEGroupInterest
+}
+
+type IEUserGroup struct {
+	gorm.Model
+	UserID    uint
+	GroupID   uint
+	EntryDate time.Time
+}
+
 type Interest struct {
 	gorm.Model
-	UUID          uuid.UUID `gorm:"type:uuid"`
-	Title         string
-	Picture       string
-	UserInterests []IEUserInterest
+	UUID             uuid.UUID `gorm:"type:uuid"`
+	Title            string
+	Picture          string
+	UserInterests    []IEUserInterest
+	GroupInterests   []IEGroupInterest
+	SubInterests     []Interest `gorm:"foreignkey:InterestID"`
+	InterestID       *uint
+	SubInterestCount uint
 }
 
 type IEUserInterest struct {
@@ -35,21 +57,10 @@ type IEUserInterest struct {
 	InterestID uint
 }
 
-type Group struct {
+type IEGroupInterest struct {
 	gorm.Model
-	UUID       uuid.UUID `gorm:"type:uuid"`
-	Users      []User
-	UserGroups []IEUserGroup
-	IsOpen     bool
-	Message    []Message
-	Board      string
-}
-
-type IEUserGroup struct {
-	gorm.Model
-	UserID    uint
-	GroupID   uint
-	EntryDate time.Time
+	GroupID    uint
+	InterestID uint
 }
 
 type Message struct {
