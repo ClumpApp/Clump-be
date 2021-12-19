@@ -15,8 +15,7 @@ func (obj *API) login(c *fiber.Ctx) error {
 	uid, gid, matches := obj.service.Login(loginDTO)
 	if matches {
 		token := middleware.CreateToken(uid, gid)
-		c.Cookie(&fiber.Cookie{Name: middleware.TokenName, Value: token})
-		return c.SendStatus(fiber.StatusOK)
+		return c.SendString(token)
 	}
 	return c.SendStatus(fiber.StatusUnauthorized)
 }

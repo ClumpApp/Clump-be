@@ -8,19 +8,16 @@ import (
 )
 
 const (
-	key         = "ASE"
-	Group       = "group"
-	User        = "user"
-	TokenSource = "cookie"
-	TokenName   = "token"
-	ContextKey  = "account"
+	key        = "ASE"
+	Group      = "group"
+	User       = "user"
+	ContextKey = "account"
 )
 
 func GetJWTMiddleware() interface{} {
 	return jwtware.New(jwtware.Config{
-		ContextKey:  ContextKey,
-		SigningKey:  []byte(key),
-		TokenLookup: TokenSource + ":" + TokenName,
+		ContextKey: ContextKey,
+		SigningKey: []byte(key),
 	})
 }
 

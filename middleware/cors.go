@@ -5,5 +5,10 @@ import (
 )
 
 func GetCORSMiddleware() interface{} {
-	return cors.New()
+	return cors.New(
+		cors.Config{
+			AllowOrigins:     "https://clump-fe.azurewebsites.net/",
+			AllowCredentials: true,
+			ExposeHeaders:    "*"},
+	)
 }
