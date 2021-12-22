@@ -15,19 +15,19 @@ type storage struct {
 	container azblob.ContainerClient
 }
 
-var once sync.Once
-var instance *storage
+var onceStorage sync.Once
+var instanceStorage *storage
 
-func getInstance() *storage {
-	once.Do(func() {
-
-		service, _ := azblob.NewServiceClientFromConnectionString("DefaultEndpointsProtocol=https;AccountName=clumpstorage;AccountKey=Iy2lMypYjDPIi6Gg6h7jWRFHh6L9x/mZKfUJUua5aq5hfL8I78Kcwag64hO6HmMLiXJwT7TIolL5FtSAyDYn+g==;EndpointSuffix=core.windows.net", nil)
+func GetStorage() *storage {
+	onceStorage.Do(func() {
+		connStr := GetConfig().GetStorage()
+		service, _ := azblob.NewServiceClientFromConnectionString(connStr, nil)
 		container := service.NewContainerClient(containerName)
 
-		instance = &storage{container}
+		instanceStorage = &storage{container}
 	})
 
-	return instance
+	return instanceStorage
 }
 
 func (obj storage) Upload(name string, data []byte) {

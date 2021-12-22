@@ -3,12 +3,13 @@ package middleware
 import (
 	"time"
 
+	"github.com/clumpapp/clump-be/utility"
+
 	jwtware "github.com/gofiber/jwt/v3"
 	"github.com/golang-jwt/jwt/v4"
 )
 
 const (
-	key        = "ASE"
 	Group      = "group"
 	User       = "user"
 	ContextKey = "account"
@@ -17,7 +18,7 @@ const (
 func GetJWTMiddleware() interface{} {
 	return jwtware.New(jwtware.Config{
 		ContextKey: ContextKey,
-		SigningKey: []byte(key),
+		SigningKey: []byte(utility.GetConfig().GetJWTKey()),
 	})
 }
 
