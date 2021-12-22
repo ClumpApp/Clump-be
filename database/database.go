@@ -2,8 +2,9 @@ package database
 
 import (
 	"github.com/clumpapp/clump-be/model"
+	"github.com/clumpapp/clump-be/utility"
 
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -16,14 +17,15 @@ func New() *Database {
 }
 
 func (obj *Database) Connect() {
-	db, _ := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	dsn := utility.GetConfig().GetDB()
+	db, _ := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	obj.gormDB = db
 }
 
 func (obj *Database) Migrate() {
 	obj.gormDB.AutoMigrate(
-		&model.User{},
 		&model.Group{},
+		&model.User{},
 		&model.Interest{},
 		&model.Message{},
 		&model.IEUserGroup{},
