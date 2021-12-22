@@ -31,7 +31,7 @@ func CreateToken(user, group uint) string {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	t, err := token.SignedString([]byte(key))
+	t, err := token.SignedString([]byte(utility.GetConfig().GetJWTKey()))
 	if err != nil {
 		return err.Error()
 	}
