@@ -30,6 +30,10 @@ func GetStorage() *storage {
 	return instanceStorage
 }
 
+func (obj storage) GetURL() string {
+	return obj.container.URL() + "/"
+}
+
 func (obj storage) Upload(name string, data []byte) {
 
 	ctx := context.Background()

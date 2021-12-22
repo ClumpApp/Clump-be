@@ -3,6 +3,8 @@ package model
 import (
 	"time"
 
+	"github.com/clumpapp/clump-be/utility"
+
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -90,5 +92,12 @@ func (obj *Interest) BeforeCreate(tx *gorm.DB) (err error) {
 
 func (obj *Message) BeforeCreate(tx *gorm.DB) (err error) {
 	obj.UUID = uuid.New()
+	return
+}
+
+func (obj *Message) AfterFind(tx *gorm.DB) (err error) {
+	if obj.MessageType == "Media" {
+		obj.MessageText = utility.GetStorage().GetURL() + obj.MessageText
+	}
 	return
 }
