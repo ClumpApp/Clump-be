@@ -15,16 +15,16 @@ func (obj *Service) Login(loginDTO model.LoginDTO) (uint, uint, bool) {
 }
 
 //this version doesnt have interests (will be updated)
-func (obj *Service) SignUp(signupDTO model.SignUpDTO) bool {
+func (obj *Service) SignUp(signupDTO model.SignUpDTO) (uint, uint, bool) {
 	var user model.User
 	foundName := obj.db.Read(&model.User{}, &model.User{UserName: signupDTO.UserName}, &user)
 	foundMail := obj.db.Read(&model.User{}, &model.User{UserMail: signupDTO.UserMail}, &user)
 	if !foundName && !foundMail {
 		utility.Convert(&signupDTO, &user)
 		obj.db.Create(&model.User{}, &user)
-		return true
+		return user.ID, 0, true
 	}
-	return false
+	return 0, 0, false
 }
 
 func (obj *Service) GetGroupUsers(groupid float64) []model.UserDTO {
