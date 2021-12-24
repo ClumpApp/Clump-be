@@ -24,11 +24,12 @@ func (obj *Service) GetGroupMessages(groupid float64) []model.MessageOutDTO {
 }
 
 func (obj *Service) CreateMessage(groupid, userid float64, messageDTO model.MessageInDTO) {
-	var message model.Message
-	utility.Convert(&messageDTO, &message)
-	message.GroupID = uint(groupid)
-	message.UserID = uint(userid)
-	message.MessageType = model.Text
+	message := model.Message{
+		GroupID:       uint(groupid),
+		UserID:        uint(userid),
+		MessageType:   model.Text,
+		MessageString: messageDTO.Message,
+	}
 	obj.db.Create(&model.Message{}, &message)
 }
 
