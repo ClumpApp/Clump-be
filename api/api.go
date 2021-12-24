@@ -35,14 +35,18 @@ func (obj *API) Run() {
 
 	api := app.Group(prefix)
 
-	api.Get("/messages", obj.getgroupmessages)
-	api.Get("/users", obj.getgroupusers)
+	api.Get("/messages", obj.getGroupMessages)
+	api.Get("/users", obj.getGroupUsers)
+	api.Get("/users/me", obj.getUser)
 
-	api.Post("/messages", obj.postmessage)
+	api.Post("/messages", obj.postMessage)
+	api.Post("/messages/image", obj.postImage)
+	api.Post("/messages/video", obj.postVideo)
+	api.Post("/messages/other", obj.postOther)
 
-	api.Put("/users/:"+id, obj.putuser)
+	api.Put("/users/:"+id, obj.putUser)
 
-	api.Delete("/users/:"+id, obj.deleteuser)
+	api.Delete("/users/:"+id, obj.deleteUser)
 	api.Delete("/messages/:"+id, obj.deletemessage)
 
 	app.Use(obj.notFound)

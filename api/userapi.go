@@ -29,13 +29,19 @@ func (obj *API) signup(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusOK)
 }
 
-func (obj *API) getgroupusers(c *fiber.Ctx) error {
+func (obj *API) getGroupUsers(c *fiber.Ctx) error {
 	id := obj.getGroupIDFromToken(c)
 	usersDTO := obj.service.GetGroupUsers(id)
 	return c.JSON(usersDTO)
 }
 
-func (obj *API) putuser(c *fiber.Ctx) error {
+func (obj *API) getUser(c *fiber.Ctx) error {
+	id := obj.getUserIDFromToken(c)
+	usersDTO := obj.service.GetUser(id)
+	return c.JSON(usersDTO)
+}
+
+func (obj *API) putUser(c *fiber.Ctx) error {
 	var userDTO model.UserDTO
 	if err := c.BodyParser(&userDTO); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
@@ -45,7 +51,7 @@ func (obj *API) putuser(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusOK)
 }
 
-func (obj *API) deleteuser(c *fiber.Ctx) error {
+func (obj *API) deleteUser(c *fiber.Ctx) error {
 	id := obj.getIDFromParam(c)
 	obj.service.DeleteUser(id)
 	return c.SendStatus(fiber.StatusNoContent)

@@ -12,16 +12,15 @@ const (
 	other = "other"
 )
 
-func (obj *API) getgroupmessages(c *fiber.Ctx) error {
+func (obj *API) getGroupMessages(c *fiber.Ctx) error {
 	id := obj.getGroupIDFromToken(c)
 	messagesDTO := obj.service.GetGroupMessages(id)
 	return c.JSON(messagesDTO)
 }
 
-func (obj *API) postmessage(c *fiber.Ctx) error {
-	var messageInDTO model.MessageInDTO
-	if err := c.BodyParser(&messageInDTO); err != nil {
-		return c.SendStatus(fiber.StatusUnprocessableEntity)
+func (obj *API) postMessage(c *fiber.Ctx) error {
+	messageInDTO := model.MessageInDTO{
+		MessageString: string(c.Body()),
 	}
 	gid := obj.getGroupIDFromToken(c)
 	uid := obj.getUserIDFromToken(c)

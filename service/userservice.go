@@ -27,6 +27,12 @@ func (obj *Service) GetGroupUsers(groupid float64) []model.UserDTO {
 	return userDTOs
 }
 
+func (obj *Service) GetUser(userid float64) model.UserDTO {
+	var userDTO model.UserDTO
+	obj.db.Query(&model.User{}, uint(userid), &userDTO)
+	return userDTO
+}
+
 func (obj *Service) UpdateUser(id string, userDTO model.UserDTO) {
 	var user model.User
 	utility.Convert(&userDTO, &user)

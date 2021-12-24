@@ -32,18 +32,35 @@ func (obj *Service) CreateMessage(groupid, userid float64, messageDTO model.Mess
 	obj.db.Create(&model.Message{}, &message)
 }
 
-func (obj *Service) CreateImage(groupid, userid float64, name string, file io.ReadSeekCloser) {
-	newName := obj.CreateMedia(name, file)
+func (obj *Service) createMedia(groupid, userid float64, name string, file io.ReadSeekCloser, mType model.MessageType) {
+	newName := obj.uploadMedia(name, file)
 	message := model.Message{
 		GroupID:       uint(groupid),
 		UserID:        uint(userid),
-		MessageType:   model.Picture,
+		MessageType:   mType,
 		MessageString: newName,
 	}
 	obj.db.Create(&model.Message{}, &message)
 }
 
+func (obj *Service) CreateImage(groupid, userid float64, name string, file io.ReadSeekCloser) {
+	obj.createMedia(groupid, userid, name, file, model.Image)
+}
+
+func (obj *Service) CreateVideo(groupid, userid float64, name string, file io.ReadSeekCloser) {
+	obj.createMedia(groupid, userid, name, file, model.Video)
+}
+
+func (obj *Service) CreateOther(groupid, userid float64, name string, file io.ReadSeekCloser) {
+	obj.createMedia(groupid, userid, name, file, model.Other)
+}
+
 func (obj *Service) DeleteMessage(id string) {
 	uuid := utility.ConvertUUID(id)
+	var message model.Message
+	obj.db.Read(&model.Message{}, &model.Message{UUID: uuid}, &message)
+	if message.MessageType == model.Image || message.MessageType == model.Video {
+		obj.deleteMedia(message.MessageString)
+	}
 	obj.db.Delete(&model.Message{}, &model.Message{UUID: uuid})
 }

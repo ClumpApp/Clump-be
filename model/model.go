@@ -67,7 +67,7 @@ type MessageType int
 const (
 	Undefined MessageType = iota
 	Text
-	Picture
+	Image
 	Video
 	Other
 )
@@ -103,7 +103,7 @@ func (obj *Message) BeforeCreate(tx *gorm.DB) (err error) {
 }
 
 func (obj *Message) AfterFind(tx *gorm.DB) (err error) {
-	if obj.MessageType == Picture || obj.MessageType == Video {
+	if obj.MessageType == Image || obj.MessageType == Video {
 		obj.MessageString = utility.GetStorage().GetURL() + obj.MessageString
 	}
 	return
