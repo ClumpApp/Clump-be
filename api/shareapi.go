@@ -19,8 +19,9 @@ func (obj *API) getGroupMessages(c *fiber.Ctx) error {
 }
 
 func (obj *API) postMessage(c *fiber.Ctx) error {
-	messageInDTO := model.MessageInDTO{
-		MessageString: string(c.Body()),
+	var messageInDTO model.MessageInDTO
+	if err := c.BodyParser(&messageInDTO); err != nil {
+		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}
 	gid := obj.getGroupIDFromToken(c)
 	uid := obj.getUserIDFromToken(c)
