@@ -6,10 +6,9 @@ import (
 
 type UserDTO struct {
 	UUID           string `json:",omitempty"`
-	Name           string
-	ProfilePicture string
 	UserName       string
 	UserMail       string
+	ProfilePicture string
 }
 
 type InterestDTO struct {
