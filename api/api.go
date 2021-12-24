@@ -29,7 +29,7 @@ func (obj *API) Run() {
 	})
 
 	app.Post("/login", obj.login)
-	app.Post("/signup", obj.signup)
+	app.Post("/signup/register", obj.signup)
 
 	app.Use(middleware.GetJWTMiddleware())
 
