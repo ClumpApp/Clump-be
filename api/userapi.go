@@ -21,11 +21,11 @@ func (obj *API) login(c *fiber.Ctx) error {
 }
 
 func (obj *API) signup(c *fiber.Ctx) error {
-	var userDTO model.UserDTO
-	if err := c.BodyParser(&userDTO); err != nil {
+	var signupDTO model.SignUpDTO
+	if err := c.BodyParser(&signupDTO); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}
-	obj.service.SignUp(userDTO)
+	obj.service.SignUp(signupDTO)
 	return c.SendStatus(fiber.StatusOK)
 }
 
