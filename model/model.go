@@ -12,11 +12,10 @@ import (
 type User struct {
 	gorm.Model
 	UUID           uuid.UUID `gorm:"type:uuid"`
-	Name           string
-	ProfilePicture string
 	UserName       string
 	UserMail       string
 	Password       string
+	ProfilePicture string
 	GroupID        uint
 	UserGroups     []IEUserGroup
 	UserInterests  []IEUserInterest
@@ -28,9 +27,7 @@ type Group struct {
 	UUID           uuid.UUID `gorm:"type:uuid"`
 	Users          []User
 	UserGroups     []IEUserGroup
-	IsOpen         bool
 	Messages       []Message
-	Board          string
 	GroupInterests []IEGroupInterest
 }
 
@@ -65,14 +62,25 @@ type IEGroupInterest struct {
 	InterestID uint
 }
 
+type MessageType int
+
+const (
+	Undefined MessageType = iota
+	Text
+	Link
+	Picture
+	Video
+)
+
 type Message struct {
 	gorm.Model
 	UUID          uuid.UUID `gorm:"type:uuid"`
 	UserID        uint
+	User          User
 	GroupID       uint
-	MessageType   string
-	MessageText   string
-	MessageEdited bool
+	MessageType   MessageType
+	MessageString string
+	MessageDate   time.Time
 }
 
 func (obj *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -96,8 +104,8 @@ func (obj *Message) BeforeCreate(tx *gorm.DB) (err error) {
 }
 
 func (obj *Message) AfterFind(tx *gorm.DB) (err error) {
-	if obj.MessageType == "Media" {
-		obj.MessageText = utility.GetStorage().GetURL() + obj.MessageText
+	if obj.MessageType == Picture || obj.MessageType == Video {
+		obj.MessageString = utility.GetStorage().GetURL() + obj.MessageString
 	}
 	return
 }

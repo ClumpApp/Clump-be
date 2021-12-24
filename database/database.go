@@ -6,6 +6,7 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type Database struct {
@@ -45,6 +46,10 @@ func (obj *Database) Read(model, ID, object interface{}) bool {
 
 func (obj *Database) Query(model, query, objects interface{}) {
 	obj.gormDB.Model(model).Where(query).Find(objects)
+}
+
+func (obj *Database) QueryWithPreload(model, query, objects interface{}) {
+	obj.gormDB.Model(model).Preload(clause.Associations).Where(query).Find(objects)
 }
 
 func (obj *Database) Update(model, query, object interface{}) {

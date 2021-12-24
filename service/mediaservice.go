@@ -13,7 +13,7 @@ func (obj *Service) CreateMedia(groupid, userid float64, name string, data []byt
 	obj.db.Create(&model.Message{}, &message)
 	var out model.MessageDTO
 	utility.Convert(&message, &out)
-	out.MessageText = utility.GetStorage().GetURL() + out.MessageText
+	out.MessageString = utility.GetStorage().GetURL() + out.MessageString
 	return out
 }
 
@@ -21,6 +21,6 @@ func (obj *Service) DeleteMedia(id string) {
 	uuid := utility.ConvertUUID(id)
 	var media model.Message
 	obj.db.Read(&model.Message{}, &model.Message{UUID: uuid}, &media)
-	utility.GetStorage().Delete(media.MessageText)
+	utility.GetStorage().Delete(media.MessageString)
 	obj.db.Delete(&model.Message{}, &model.Message{UUID: uuid})
 }

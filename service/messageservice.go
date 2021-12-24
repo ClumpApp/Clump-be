@@ -6,8 +6,18 @@ import (
 )
 
 func (obj *Service) GetGroupMessages(groupid float64) []model.MessageDTO {
+	var messages []model.Message
+	obj.db.QueryWithPreload(&model.Message{}, &model.Message{GroupID: uint(groupid)}, &messages)
 	var messageDTOs []model.MessageDTO
-	obj.db.Query(&model.Message{}, &model.Message{GroupID: uint(groupid)}, &messageDTOs)
+	for _, meesage := range messages {
+		messageDTOs = append(messageDTOs, model.MessageDTO{
+			UUID:          meesage.UUID.String(),
+			UserName:      meesage.User.UserName,
+			MessageType:   int(meesage.MessageType),
+			MessageString: meesage.MessageString,
+			MessageDate:   meesage.MessageDate,
+		})
+	}
 	return messageDTOs
 }
 
@@ -20,14 +30,6 @@ func (obj *Service) CreateMessage(groupid, userid float64, messageDTO model.Mess
 	var out model.MessageDTO
 	utility.Convert(&message, &out)
 	return out
-}
-
-func (obj *Service) UpdateMessage(id string, messageDTO model.MessageDTO) {
-	var message model.Message
-	utility.Convert(&messageDTO, &message)
-	message.MessageEdited = true
-	uuid := utility.ConvertUUID(id)
-	obj.db.Update(&model.Message{}, &model.Message{UUID: uuid}, &message)
 }
 
 func (obj *Service) DeleteMessage(id string) {

@@ -23,16 +23,6 @@ func (obj *API) postmessage(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(out)
 }
 
-func (obj *API) putmessage(c *fiber.Ctx) error {
-	var messageDTO model.MessageDTO
-	if err := c.BodyParser(&messageDTO); err != nil {
-		return c.SendStatus(fiber.StatusUnprocessableEntity)
-	}
-	id := obj.getIDFromParam(c)
-	obj.service.UpdateMessage(id, messageDTO)
-	return c.SendStatus(fiber.StatusOK)
-}
-
 func (obj *API) deletemessage(c *fiber.Ctx) error {
 	id := obj.getIDFromParam(c)
 	obj.service.DeleteMessage(id)

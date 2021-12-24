@@ -1,6 +1,8 @@
 package model
 
-// IDs should not be exposed to client, UUID should be used
+import (
+	"time"
+)
 
 type UserDTO struct {
 	UUID           string `json:",omitempty"`
@@ -16,20 +18,15 @@ type InterestDTO struct {
 	Picture string
 }
 
-type GroupDTO struct {
-	UUID   string `json:",omitempty"`
-	IsOpen bool
-	Board  string
-}
-
 type MessageDTO struct {
-	UUID          string `json:",omitempty"`
-	MessageType   string
-	MessageText   string
-	MessageEdited bool
+	UUID          string    `json:"uuid,omitempty"`
+	UserName      string    `json:"username"`
+	MessageType   int       `json:"type"`
+	MessageString string    `json:"messagestr"`
+	MessageDate   time.Time `json:"date"`
 }
 
 type LoginDTO struct {
-	UserName string
-	Password string
+	UserName string `json:"username"`
+	Password string `json:"password"`
 }
