@@ -40,11 +40,8 @@ func (obj *API) Run() {
 
 	api.Post("/messages", obj.postmessage)
 
-	api.Put("/groups/:"+id, obj.putgroup)
 	api.Put("/users/:"+id, obj.putuser)
-	api.Put("/messages/:"+id, obj.putmessage)
 
-	api.Delete("/groups/:"+id, obj.deletegroup)
 	api.Delete("/users/:"+id, obj.deleteuser)
 	api.Delete("/messages/:"+id, obj.deletemessage)
 
