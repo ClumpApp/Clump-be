@@ -67,7 +67,6 @@ type MessageType int
 const (
 	Undefined MessageType = iota
 	Text
-	Link
 	Picture
 	Video
 )
@@ -80,7 +79,6 @@ type Message struct {
 	GroupID       uint
 	MessageType   MessageType
 	MessageString string
-	MessageDate   time.Time
 }
 
 func (obj *User) BeforeCreate(tx *gorm.DB) (err error) {

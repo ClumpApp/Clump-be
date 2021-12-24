@@ -13,14 +13,14 @@ func (obj *API) getgroupmessages(c *fiber.Ctx) error {
 }
 
 func (obj *API) postmessage(c *fiber.Ctx) error {
-	var messageDTO model.MessageDTO
-	if err := c.BodyParser(&messageDTO); err != nil {
+	var messageInDTO model.MessageInDTO
+	if err := c.BodyParser(&messageInDTO); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}
 	gid := obj.getGroupIDFromToken(c)
 	uid := obj.getUserIDFromToken(c)
-	out := obj.service.CreateMessage(gid, uid, messageDTO)
-	return c.Status(fiber.StatusCreated).JSON(out)
+	obj.service.CreateMessage(gid, uid, messageInDTO)
+	return c.SendStatus(fiber.StatusCreated)
 }
 
 func (obj *API) deletemessage(c *fiber.Ctx) error {

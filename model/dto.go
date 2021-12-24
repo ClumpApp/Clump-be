@@ -18,12 +18,16 @@ type InterestDTO struct {
 	Picture string
 }
 
-type MessageDTO struct {
-	UUID          string    `json:"uuid,omitempty"`
+type MessageInDTO struct {
+	MessageString string `json:"message"`
+}
+
+type MessageOutDTO struct {
+	UUID          string    `json:"uuid"`
 	UserName      string    `json:"username"`
 	MessageType   int       `json:"type"`
 	MessageString string    `json:"messagestr"`
-	MessageDate   time.Time `json:"date"`
+	CreatedAt     time.Time `json:"date"`
 }
 
 type LoginDTO struct {

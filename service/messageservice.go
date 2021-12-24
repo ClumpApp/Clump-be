@@ -5,31 +5,29 @@ import (
 	"github.com/clumpapp/clump-be/utility"
 )
 
-func (obj *Service) GetGroupMessages(groupid float64) []model.MessageDTO {
+func (obj *Service) GetGroupMessages(groupid float64) []model.MessageOutDTO {
 	var messages []model.Message
 	obj.db.QueryWithPreload(&model.Message{}, &model.Message{GroupID: uint(groupid)}, &messages)
-	var messageDTOs []model.MessageDTO
+	var messageDTOs []model.MessageOutDTO
 	for _, meesage := range messages {
-		messageDTOs = append(messageDTOs, model.MessageDTO{
+		messageDTOs = append(messageDTOs, model.MessageOutDTO{
 			UUID:          meesage.UUID.String(),
 			UserName:      meesage.User.UserName,
 			MessageType:   int(meesage.MessageType),
 			MessageString: meesage.MessageString,
-			MessageDate:   meesage.MessageDate,
+			CreatedAt:     meesage.CreatedAt,
 		})
 	}
 	return messageDTOs
 }
 
-func (obj *Service) CreateMessage(groupid, userid float64, messageDTO model.MessageDTO) model.MessageDTO {
+func (obj *Service) CreateMessage(groupid, userid float64, messageDTO model.MessageInDTO) {
 	var message model.Message
 	utility.Convert(&messageDTO, &message)
 	message.GroupID = uint(groupid)
 	message.UserID = uint(userid)
+	message.MessageType = model.MessageType(model.Text)
 	obj.db.Create(&model.Message{}, &message)
-	var out model.MessageDTO
-	utility.Convert(&message, &out)
-	return out
 }
 
 func (obj *Service) DeleteMessage(id string) {
