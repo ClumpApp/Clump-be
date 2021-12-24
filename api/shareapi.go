@@ -45,24 +45,32 @@ func (obj *API) postImage(c *fiber.Ctx) error {
 }
 
 func (obj *API) postVideo(c *fiber.Ctx) error {
-	var messageInDTO model.MessageInDTO
-	if err := c.BodyParser(&messageInDTO); err != nil {
-		return c.SendStatus(fiber.StatusUnprocessableEntity)
+	data, err := c.FormFile(video)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	file, err := data.Open()
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
 	}
 	gid := obj.getGroupIDFromToken(c)
 	uid := obj.getUserIDFromToken(c)
-	obj.service.CreateMessage(gid, uid, messageInDTO)
+	obj.service.CreateImage(gid, uid, data.Filename, file)
 	return c.SendStatus(fiber.StatusCreated)
 }
 
 func (obj *API) postOther(c *fiber.Ctx) error {
-	var messageInDTO model.MessageInDTO
-	if err := c.BodyParser(&messageInDTO); err != nil {
-		return c.SendStatus(fiber.StatusUnprocessableEntity)
+	data, err := c.FormFile(other)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	file, err := data.Open()
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
 	}
 	gid := obj.getGroupIDFromToken(c)
 	uid := obj.getUserIDFromToken(c)
-	obj.service.CreateMessage(gid, uid, messageInDTO)
+	obj.service.CreateImage(gid, uid, data.Filename, file)
 	return c.SendStatus(fiber.StatusCreated)
 }
 

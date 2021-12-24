@@ -19,7 +19,7 @@ type InterestDTO struct {
 }
 
 type MessageInDTO struct {
-	MessageString string `json:"message"`
+	Message string `json:"message"`
 }
 
 type MessageOutDTO struct {
