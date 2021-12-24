@@ -26,7 +26,17 @@ func (obj *Service) CreateMessage(groupid, userid float64, messageDTO model.Mess
 	utility.Convert(&messageDTO, &message)
 	message.GroupID = uint(groupid)
 	message.UserID = uint(userid)
-	message.MessageType = model.MessageType(model.Text)
+	message.MessageType = model.Text
+	obj.db.Create(&model.Message{}, &message)
+}
+
+func (obj *Service) CreateImage(groupid, userid float64, name string) {
+	message := model.Message{
+		GroupID:       uint(groupid),
+		UserID:        uint(userid),
+		MessageType:   model.Picture,
+		MessageString: name,
+	}
 	obj.db.Create(&model.Message{}, &message)
 }
 

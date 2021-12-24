@@ -69,6 +69,7 @@ const (
 	Text
 	Picture
 	Video
+	Other
 )
 
 type Message struct {
