@@ -34,9 +34,13 @@ func (obj *API) postImage(c *fiber.Ctx) error {
 	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
+	file, err := data.Open()
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
 	gid := obj.getGroupIDFromToken(c)
 	uid := obj.getUserIDFromToken(c)
-	obj.service.CreateImage(gid, uid, data.Filename)
+	obj.service.CreateImage(gid, uid, data.Filename, file)
 	return c.SendStatus(fiber.StatusCreated)
 }
 

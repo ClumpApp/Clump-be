@@ -2,6 +2,7 @@ package utility
 
 import (
 	"context"
+	"io"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
@@ -34,11 +35,11 @@ func (obj storage) GetURL() string {
 	return obj.container.URL() + "/"
 }
 
-func (obj storage) Upload(name string, data []byte) {
+func (obj storage) Upload(name string, data io.ReadSeekCloser) {
 
 	ctx := context.Background()
 	blockBlob := obj.container.NewBlockBlobClient(name)
-	blockBlob.UploadBufferToBlockBlob(ctx, data, azblob.HighLevelUploadToBlockBlobOption{})
+	blockBlob.Upload(ctx, data, nil)
 
 }
 

@@ -1,6 +1,8 @@
 package service
 
 import (
+	"io"
+
 	"github.com/clumpapp/clump-be/model"
 	"github.com/clumpapp/clump-be/utility"
 )
@@ -30,12 +32,13 @@ func (obj *Service) CreateMessage(groupid, userid float64, messageDTO model.Mess
 	obj.db.Create(&model.Message{}, &message)
 }
 
-func (obj *Service) CreateImage(groupid, userid float64, name string) {
+func (obj *Service) CreateImage(groupid, userid float64, name string, file io.ReadSeekCloser) {
+	newName := obj.CreateMedia(name, file)
 	message := model.Message{
 		GroupID:       uint(groupid),
 		UserID:        uint(userid),
 		MessageType:   model.Picture,
-		MessageString: name,
+		MessageString: newName,
 	}
 	obj.db.Create(&model.Message{}, &message)
 }
