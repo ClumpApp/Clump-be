@@ -76,6 +76,7 @@ func (obj *API) postOther(c *fiber.Ctx) error {
 
 func (obj *API) deletemessage(c *fiber.Ctx) error {
 	id := obj.getIDFromParam(c)
-	obj.service.DeleteMessage(id)
+	uid := obj.getUserIDFromToken(c)
+	obj.service.DeleteMessage(id, uid)
 	return c.SendStatus(fiber.StatusNoContent)
 }

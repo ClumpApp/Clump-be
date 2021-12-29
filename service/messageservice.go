@@ -23,25 +23,23 @@ func (obj *Service) GetGroupMessages(groupid float64) []model.MessageOutDTO {
 	return messageDTOs
 }
 
-func (obj *Service) CreateMessage(groupid, userid float64, messageDTO model.MessageInDTO) {
+func (obj *Service) createMessage(groupid, userid float64, messageString string, messageType model.MessageType) {
 	message := model.Message{
 		GroupID:       uint(groupid),
 		UserID:        uint(userid),
-		MessageType:   model.Text,
-		MessageString: messageDTO.Message,
+		MessageType:   messageType,
+		MessageString: messageString,
 	}
 	obj.db.Create(&model.Message{}, &message)
 }
 
-func (obj *Service) createMedia(groupid, userid float64, name string, file io.ReadSeekCloser, mType model.MessageType) {
+func (obj *Service) createMedia(groupid, userid float64, name string, file io.ReadSeekCloser, messageType model.MessageType) {
 	newName := obj.uploadMedia(name, file)
-	message := model.Message{
-		GroupID:       uint(groupid),
-		UserID:        uint(userid),
-		MessageType:   mType,
-		MessageString: newName,
-	}
-	obj.db.Create(&model.Message{}, &message)
+	obj.createMessage(groupid, userid, newName, messageType)
+}
+
+func (obj *Service) CreateMessage(groupid, userid float64, messageDTO model.MessageInDTO) {
+	obj.createMessage(groupid, userid, messageDTO.Message, model.Text)
 }
 
 func (obj *Service) CreateImage(groupid, userid float64, name string, file io.ReadSeekCloser) {
@@ -56,12 +54,15 @@ func (obj *Service) CreateOther(groupid, userid float64, name string, file io.Re
 	obj.createMedia(groupid, userid, name, file, model.Other)
 }
 
-func (obj *Service) DeleteMessage(id string) {
-	uuid := utility.ConvertUUID(id)
+func (obj *Service) DeleteMessage(uuid string, userid float64) {
+	uuID := utility.ConvertUUID(uuid)
+	userID := uint(userid)
 	var message model.Message
-	obj.db.Read(&model.Message{}, &model.Message{UUID: uuid}, &message)
-	if message.MessageType == model.Image || message.MessageType == model.Video {
-		obj.deleteMedia(message.MessageString)
+	found := obj.db.Read(&model.Message{}, &model.Message{UUID: uuID, UserID: userID}, &message)
+	if found {
+		if message.MessageType == model.Image || message.MessageType == model.Video || message.MessageType == model.Other {
+			obj.deleteMedia(message.MessageString)
+		}
+		obj.db.Delete(&model.Message{}, message.ID)
 	}
-	obj.db.Delete(&model.Message{}, &model.Message{UUID: uuid})
 }
