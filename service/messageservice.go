@@ -11,13 +11,13 @@ func (obj *Service) GetGroupMessages(groupid float64) []model.MessageOutDTO {
 	var messages []model.Message
 	obj.db.QueryWithPreload(&model.Message{}, &model.Message{GroupID: uint(groupid)}, &messages)
 	var messageDTOs []model.MessageOutDTO
-	for _, meesage := range messages {
+	for _, message := range messages {
 		messageDTOs = append(messageDTOs, model.MessageOutDTO{
-			UUID:          meesage.UUID.String(),
-			UserName:      meesage.User.UserName,
-			MessageType:   int(meesage.MessageType),
-			MessageString: meesage.MessageString,
-			CreatedAt:     meesage.CreatedAt,
+			UUID:          message.UUID.String(),
+			UserName:      message.User.UserName,
+			MessageType:   int(message.MessageType),
+			MessageString: message.MessageString,
+			CreatedAt:     message.CreatedAt,
 		})
 	}
 	return messageDTOs
@@ -31,6 +31,15 @@ func (obj *Service) createMessage(groupid, userid float64, messageString string,
 		MessageString: messageString,
 	}
 	obj.db.Create(&model.Message{}, &message)
+	var user model.User
+	obj.db.Query(&model.User{}, message.UserID, &user)
+	(*obj.delegate).SendMessage(message.GroupID, model.MessageOutDTO{
+		UUID:          message.UUID.String(),
+		UserName:      user.UserName,
+		MessageType:   int(message.MessageType),
+		MessageString: message.MessageString,
+		CreatedAt:     message.CreatedAt,
+	})
 }
 
 func (obj *Service) createMedia(groupid, userid float64, name string, file io.ReadSeekCloser, messageType model.MessageType) {

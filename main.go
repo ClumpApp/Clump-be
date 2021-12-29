@@ -12,6 +12,7 @@ func main() {
 
 	s := service.New(db)
 	a := api.New(s)
+	s.SetDelegate(a)
 
 	a.Run()
 }
