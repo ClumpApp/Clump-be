@@ -7,8 +7,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-const prefix = "/api/v1"
-const id = "id"
+const (
+	accountPrefix = "/account"
+	apiPrefix     = "/api/v1"
+	id            = "id"
+)
 
 type API struct {
 	service *service.Service
@@ -22,18 +25,21 @@ func (obj *API) Run() {
 	app := fiber.New()
 
 	app.Use(middleware.GetCORSMiddleware())
-	//app.Use(middleware.GetLimiterMiddleware())
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"Hello": "World!"})
+		return c.SendStatus(fiber.StatusOK)
 	})
 
-	app.Post("/login", obj.login)
-	app.Post("/signup/register", obj.signup)
+	account := app.Group(accountPrefix)
 
-	app.Use(middleware.GetJWTMiddleware())
+	account.Use(middleware.GetLimiterMiddleware())
 
-	api := app.Group(prefix)
+	account.Post("/login", obj.login)
+	account.Post("/signup", obj.signup)
+
+	api := app.Group(apiPrefix)
+
+	api.Use(middleware.GetJWTMiddleware())
 
 	api.Get("/messages", obj.getGroupMessages)
 	api.Get("/users", obj.getGroupUsers)
