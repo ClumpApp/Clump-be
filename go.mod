@@ -5,9 +5,9 @@ go 1.17
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v0.2.0
 	github.com/alexedwards/argon2id v0.0.0-20211130144151-3585854a6387
-	github.com/gofiber/fiber/v2 v2.23.0
+	github.com/gofiber/fiber/v2 v2.24.0
 	github.com/gofiber/jwt/v3 v3.2.2
-	github.com/gofiber/websocket/v2 v2.0.14
+	github.com/gofiber/websocket/v2 v2.0.15
 	github.com/golang-jwt/jwt/v4 v4.2.0
 	github.com/google/uuid v1.3.0
 	github.com/jinzhu/copier v0.3.4
@@ -19,7 +19,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.20.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v0.8.3 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
-	github.com/fasthttp/websocket v1.4.3-rc.10 // indirect
+	github.com/fasthttp/websocket v1.4.4 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.10.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
