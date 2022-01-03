@@ -32,8 +32,8 @@ github.com/go-stack/stack v1.8.0/go.mod h1:v0f6uXyyMGvRgIKkXu+yp6POWl0qKG85gN/me
 github.com/gofiber/fiber/v2 v2.23.0/go.mod h1:MR1usVH3JHYRyQwMe2eZXRSZHRX38fkV+A7CPB+DlDQ=
 github.com/gofiber/fiber/v2 v2.24.0 h1:18rpLoQMJBVlLtX/PwgHj3hIxPSeWfN1YeDJ2lEnzjU=
 github.com/gofiber/fiber/v2 v2.24.0/go.mod h1:MR1usVH3JHYRyQwMe2eZXRSZHRX38fkV+A7CPB+DlDQ=
-github.com/gofiber/jwt/v3 v3.2.2 h1:ARz4y2bAx1ZjSKyv9Yl7QGjvUzAv3MI3MQ56lum43Go=
-github.com/gofiber/jwt/v3 v3.2.2/go.mod h1:ekuolLmndJPtPk8K9BXvWE5JnMO5/ho3rI1ko0Xc0lM=
+github.com/gofiber/jwt/v3 v3.2.3 h1:p0Eraucxe7TpTPkkCHXiOu+m6UKknTvF+3Qgf/42vdA=
+github.com/gofiber/jwt/v3 v3.2.3/go.mod h1:f+cElEcz58ogfz64nolcxiy7FCrC5At9dJR8RZNG9Ow=
 github.com/gofiber/websocket/v2 v2.0.15 h1:ucCrHNlTGWgxIQeEsp3LujDCs/gtGRR96DyzFP8JAE0=
 github.com/gofiber/websocket/v2 v2.0.15/go.mod h1:GlTUuZyhNPeJj96x8q6jmZ/lElfzwBk8LMJwo4Jqc5Q=
 github.com/gofrs/uuid v4.0.0+incompatible h1:1SD/1F5pU8p29ybwgQSwpQk+mwdRrXCYuPhW6m+TnJw=
