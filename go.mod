@@ -5,8 +5,8 @@ go 1.17
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v0.2.0
 	github.com/alexedwards/argon2id v0.0.0-20211130144151-3585854a6387
-	github.com/gofiber/fiber/v2 v2.23.0
-	github.com/gofiber/jwt/v3 v3.2.2
+	github.com/gofiber/fiber/v2 v2.24.0
+	github.com/gofiber/jwt/v3 v3.2.3
 	github.com/gofiber/websocket/v2 v2.0.14
 	github.com/golang-jwt/jwt/v4 v4.2.0
 	github.com/google/uuid v1.3.0
