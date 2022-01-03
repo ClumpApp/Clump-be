@@ -8,9 +8,10 @@ import (
 )
 
 const (
-	accountPrefix = "/account"
-	apiPrefix     = "/api/v1"
-	id            = "id"
+	accountPrefix   = "/account"
+	apiPrefix       = "/api/v1"
+	websocketPrefix = "/ws"
+	id              = "id"
 )
 
 type API struct {
@@ -54,6 +55,12 @@ func (obj *API) Run() {
 
 	api.Delete("/users/:"+id, obj.deleteUser)
 	api.Delete("/messages/:"+id, obj.deletemessage)
+
+	ws := app.Group(websocketPrefix)
+
+	ws.Use(obj.setup)
+
+	ws.Get("/connect", obj.websocket())
 
 	app.Use(obj.notFound)
 
