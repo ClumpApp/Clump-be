@@ -5,13 +5,31 @@ import (
 	//"github.com/clumpapp/clump-be/utility"
 )
 
-func (obj *Service) AddInterests(interests []string, userid uint) {
+func (obj *Service) CreateInterest(interestDTO model.InterestDTO) {
+	obj.db.Create(&model.Interest{}, &interestDTO)
+}
+
+func (obj *Service) GetInterests() []model.InterestDTO {
+	var interests []model.Interest
+	obj.db.Query(&model.Interest{}, uint(0), &interests)
+	var interestDTOs []model.InterestDTO
+	for _, interest := range interests {
+		interestDTOs = append(interestDTOs, model.InterestDTO{
+			UUID:    interest.UUID.String(),
+			Title:   interest.Title,
+			Picture: interest.Picture,
+		})
+	}
+	return interestDTOs
+}
+
+func (obj *Service) AddInterests(interests []model.InterestDTO, userid uint) {
 	var intr model.Interest
 	var userintr model.IEUserInterest
 	var userintrs []model.IEUserInterest
 	for _, interest := range interests {
 		obj.db.Create(&model.IEUserInterest{}, &userintr)
-		obj.db.Query(&model.Interest{}, &model.Interest{Title: interest}, &intr)
+		obj.db.Query(&model.Interest{}, &model.Interest{Title: interest.Title}, &intr)
 		obj.db.Update(&model.IEUserInterest{}, userintr.ID, &model.IEUserInterest{UserID: userid, InterestID: intr.ID})
 		userintrs = append(userintrs, userintr)
 	}

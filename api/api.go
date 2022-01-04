@@ -56,6 +56,10 @@ func (obj *API) Run() {
 	api.Delete("/users/:"+id, obj.deleteUser)
 	api.Delete("/messages/:"+id, obj.deletemessage)
 
+	api.Post("/interest", obj.createInterest)
+	api.Get("/interests", obj.getInterests)
+	api.Post("/users/:"+id, obj.addInterests)
+
 	ws := app.Group(websocketPrefix)
 
 	ws.Use(obj.setup)
