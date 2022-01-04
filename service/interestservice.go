@@ -42,15 +42,15 @@ func (obj *Service) AddInterests(interestsDTO []model.InterestDTO, userid float6
 	}
 }
 
-func (obj *Service) FindGroup(userid float64) bool {
+func (obj *Service) FindMatchingGroup(userid float64) bool {
 	var user model.User
-	obj.db.QueryWithPreload(&model.User{}, uint(userid), &user)
-	ieUserInterests := user.UserInterests
+	userID := uint(userid)
+	obj.db.QueryWithPreload(&model.User{}, userID, &user)
 
 	groups := make(map[uint]int)
-	for _, ieUserInterest := range ieUserInterests {
+	for _, ieUserInterest := range user.UserInterests {
 		var ieGroupInterests []model.IEGroupInterest
-		obj.db.Query(&model.IEGroupInterest{}, &model.IEGroupInterest{InterestID: ieUserInterest.ID}, &ieGroupInterests)
+		obj.db.Query(&model.IEGroupInterest{}, &model.IEGroupInterest{InterestID: ieUserInterest.InterestID}, &ieGroupInterests)
 		for _, ieGroupInterest := range ieGroupInterests {
 			groups[ieGroupInterest.GroupID] += 1
 		}
@@ -65,11 +65,43 @@ func (obj *Service) FindGroup(userid float64) bool {
 		}
 	}
 
-	if bestMatchRank < threshold {
+	if bestMatchRank < threshold { // Create a group of the user alone
+		var newGroup model.Group
+		obj.db.Create(&model.Group{}, &newGroup)
+		ieGroupInterest := model.IEGroupInterest{GroupID: newGroup.ID}
+		for _, ieUserInterest := range user.UserInterests {
+			ieGroupInterest.InterestID = ieUserInterest.InterestID
+			obj.db.Create(&model.IEGroupInterest{}, &ieGroupInterest)
+		}
+		obj.db.Create(&model.IEUserGroup{}, &model.IEUserGroup{GroupID: bestMatch, UserID: userID})
+		obj.db.Update(&model.User{}, userID, &model.User{GroupID: bestMatch})
 		return false
 	}
 
-	obj.db.Update(&model.User{}, uint(userid), &model.User{GroupID: bestMatch})
+	// Remove additional interests from a group if there is only 1 user
+	var group model.Group
+	obj.db.QueryWithPreload(&model.Group{}, bestMatch, &group)
+	if len(group.Users) == 1 {
+		firstUser := group.Users[0].ID
+		var ieUserInterests []model.IEUserInterest
+		obj.db.Query(&model.IEUserInterest{}, &model.IEUserInterest{UserID: firstUser}, &ieUserInterests)
+
+		for _, ieGroupInterest := range group.GroupInterests {
+			isCommon := false
+			for _, ieUserInterest := range ieUserInterests {
+				if ieUserInterest.InterestID == ieGroupInterest.InterestID {
+					isCommon = true
+					break
+				}
+			}
+			if !isCommon {
+				obj.db.Delete(&model.IEGroupInterest{}, ieGroupInterest.ID)
+			}
+		}
+	}
+
+	obj.db.Create(&model.IEUserGroup{}, &model.IEUserGroup{GroupID: bestMatch, UserID: userID})
+	obj.db.Update(&model.User{}, userID, &model.User{GroupID: bestMatch})
 	return true
 }
 

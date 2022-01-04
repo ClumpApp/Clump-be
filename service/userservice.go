@@ -50,16 +50,3 @@ func (obj *Service) DeleteUser(id string) {
 	uuid := utility.ConvertUUID(id)
 	obj.db.Delete(&model.User{}, &model.User{UUID: uuid})
 }
-
-/* These are unnecessary as we will only be taking DTO struct from the request and can do them all once
-func (obj *Service) UpdateUserName(userDTO model.UserDTO, name string) {
-	//obj.db.Update(&model.UserDTO{}, &model.UserDTO{ID: userDTO.ID}, &model.UserDTO{UserName: name})
-	//obj.db.Update(&model.User{}, &model.User{Model: gorm.Model{ID: userDTO.ID}}, &model.User{UserName: name})
-
-}
-
-func (obj *Service) UpdateProfilePicture(userDTO model.UserDTO, picture string) {
-	//obj.db.Update(&model.UserDTO{}, &model.UserDTO{ID: userDTO.ID}, &model.UserDTO{ProfilePicture: picture})
-	//obj.db.Update(&model.User{}, &model.User{Model: gorm.Model{ID: userDTO.ID}}, &model.User{ProfilePicture: picture})
-}
-*/
