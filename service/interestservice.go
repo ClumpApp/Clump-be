@@ -5,6 +5,10 @@ import (
 	"github.com/clumpapp/clump-be/utility"
 )
 
+const (
+	threshold = 3
+)
+
 func (obj *Service) CreateInterest(interestDTO model.InterestDTO) {
 	var interest model.Interest
 	utility.Convert(interestDTO, interest)
@@ -36,6 +40,37 @@ func (obj *Service) AddInterests(interestsDTO []model.InterestDTO, userid float6
 			InterestID: interest.ID,
 		})
 	}
+}
+
+func (obj *Service) FindGroup(userid float64) bool {
+	var user model.User
+	obj.db.QueryWithPreload(&model.User{}, uint(userid), &user)
+	ieUserInterests := user.UserInterests
+
+	groups := make(map[uint]int)
+	for _, ieUserInterest := range ieUserInterests {
+		var ieGroupInterests []model.IEGroupInterest
+		obj.db.Query(&model.IEGroupInterest{}, &model.IEGroupInterest{InterestID: ieUserInterest.ID}, &ieGroupInterests)
+		for _, ieGroupInterest := range ieGroupInterests {
+			groups[ieGroupInterest.GroupID] += 1
+		}
+	}
+
+	var bestMatch uint
+	bestMatchRank := 0
+	for id, rank := range groups {
+		if rank > bestMatchRank {
+			bestMatch = id
+			bestMatchRank = rank
+		}
+	}
+
+	if bestMatchRank < threshold {
+		return false
+	}
+
+	obj.db.Update(&model.User{}, uint(userid), &model.User{GroupID: bestMatch})
+	return true
 }
 
 func (obj *Service) FindInterests(userid uint) []model.Interest {

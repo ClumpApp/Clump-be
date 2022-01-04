@@ -25,9 +25,9 @@ func (obj *API) signup(c *fiber.Ctx) error {
 	if err := c.BodyParser(&signupDTO); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}
-	uid, gid, available := obj.service.SignUp(signupDTO)
+	uid, available := obj.service.SignUp(signupDTO)
 	if available {
-		token := middleware.CreateToken(uid, gid)
+		token := middleware.CreateToken(uid, 0)
 		return c.SendString(token)
 	}
 	return c.SendStatus(fiber.StatusUnauthorized)
