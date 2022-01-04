@@ -6,11 +6,12 @@ import (
 	"github.com/clumpapp/clump-be/utility"
 
 	"gorm.io/gorm"
+	"github.com/google/uuid"
 )
 
 type User struct {
 	gorm.Model
-	UUID           [16]byte `gorm:"type:uuid"`
+	UUID           uuid.UUID `gorm:"type:uuid"`
 	UserName       string
 	UserMail       string
 	Password       string
@@ -23,7 +24,7 @@ type User struct {
 
 type Group struct {
 	gorm.Model
-	UUID           [16]byte `gorm:"type:uuid"`
+	UUID           uuid.UUID `gorm:"type:uuid"`
 	Users          []User
 	UserGroups     []IEUserGroup
 	Messages       []Message
@@ -39,7 +40,7 @@ type IEUserGroup struct {
 
 type Interest struct {
 	gorm.Model
-	UUID             [16]byte `gorm:"type:uuid"`
+	UUID             uuid.UUID `gorm:"type:uuid"`
 	Title            string
 	Picture          string
 	UserInterests    []IEUserInterest
@@ -73,7 +74,7 @@ const (
 
 type Message struct {
 	gorm.Model
-	UUID          [16]byte `gorm:"type:uuid"`
+	UUID          uuid.UUID `gorm:"type:uuid"`
 	UserID        uint
 	User          User
 	GroupID       uint
