@@ -11,7 +11,7 @@ const (
 
 func (obj *Service) CreateInterest(interestDTO model.InterestDTO) {
 	var interest model.Interest
-	utility.Convert(interestDTO, interest)
+	utility.Convert(&interestDTO, &interest)
 	obj.db.Create(&model.Interest{}, &interest)
 }
 
