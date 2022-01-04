@@ -2,20 +2,22 @@ package service
 
 import (
 	"github.com/clumpapp/clump-be/model"
-	//"github.com/clumpapp/clump-be/utility"
+	"github.com/clumpapp/clump-be/utility"
 )
 
 func (obj *Service) CreateInterest(interestDTO model.InterestDTO) {
-	obj.db.Create(&model.Interest{}, &interestDTO)
+	var interest model.Interest
+	utility.Convert(interestDTO, interest)
+	obj.db.Create(&model.Interest{}, &interest)
 }
 
 func (obj *Service) GetInterests() []model.InterestDTO {
 	var interests []model.Interest
-	obj.db.Query(&model.Interest{}, uint(0), &interests)
+	obj.db.Query(&model.Interest{}, &model.Interest{InterestID: nil}, &interests)
 	var interestDTOs []model.InterestDTO
 	for _, interest := range interests {
 		interestDTOs = append(interestDTOs, model.InterestDTO{
-			UUID:    interest.UUID.String(),
+			UUID:    utility.ConvertString(interest.UUID),
 			Title:   interest.Title,
 			Picture: interest.Picture,
 		})
@@ -23,17 +25,17 @@ func (obj *Service) GetInterests() []model.InterestDTO {
 	return interestDTOs
 }
 
-func (obj *Service) AddInterests(interests []model.InterestDTO, userid uint) {
-	var intr model.Interest
-	var userintr model.IEUserInterest
-	var userintrs []model.IEUserInterest
-	for _, interest := range interests {
-		obj.db.Create(&model.IEUserInterest{}, &userintr)
-		obj.db.Query(&model.Interest{}, &model.Interest{Title: interest.Title}, &intr)
-		obj.db.Update(&model.IEUserInterest{}, userintr.ID, &model.IEUserInterest{UserID: userid, InterestID: intr.ID})
-		userintrs = append(userintrs, userintr)
+func (obj *Service) AddInterests(interestsDTO []model.InterestDTO, userid float64) {
+	var interest model.Interest
+	for _, interestDTO := range interestsDTO {
+		obj.db.Query(&model.Interest{}, &model.Interest{
+			UUID: utility.ConvertUUID(interestDTO.UUID),
+		}, &interest)
+		obj.db.Create(&model.IEUserInterest{}, &model.IEUserInterest{
+			UserID:     uint(userid),
+			InterestID: interest.ID,
+		})
 	}
-	obj.db.Update(&model.User{}, userid, &model.User{UserInterests: userintrs})
 }
 
 func (obj *Service) FindInterests(userid uint) []model.Interest {

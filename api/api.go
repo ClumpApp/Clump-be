@@ -9,6 +9,7 @@ import (
 
 const (
 	accountPrefix   = "/account"
+	adminPrefix     = "/admin"
 	apiPrefix       = "/api/v1"
 	websocketPrefix = "/ws"
 	id              = "id"
@@ -38,6 +39,10 @@ func (obj *API) Run() {
 	account.Post("/login", obj.login)
 	account.Post("/signup", obj.signup)
 
+	admin := app.Group(adminPrefix)
+
+	admin.Post("/interests", obj.postInterest)
+
 	api := app.Group(apiPrefix)
 
 	api.Use(middleware.GetJWTMiddleware())
@@ -45,7 +50,9 @@ func (obj *API) Run() {
 	api.Get("/messages", obj.getGroupMessages)
 	api.Get("/users", obj.getGroupUsers)
 	api.Get("/users/me", obj.getUser)
+	api.Get("/interests", obj.getInterests)
 
+	api.Post("/users/interests", obj.addInterests)
 	api.Post("/messages", obj.postMessage)
 	api.Post("/messages/image", obj.postImage)
 	api.Post("/messages/video", obj.postVideo)
@@ -55,10 +62,6 @@ func (obj *API) Run() {
 
 	api.Delete("/users/:"+id, obj.deleteUser)
 	api.Delete("/messages/:"+id, obj.deletemessage)
-
-	api.Post("/interest", obj.createInterest)
-	api.Get("/interests", obj.getInterests)
-	api.Post("/users/:"+id, obj.addInterests)
 
 	ws := app.Group(websocketPrefix)
 

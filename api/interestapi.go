@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func (obj *API) createInterest(c *fiber.Ctx) error {
+func (obj *API) postInterest(c *fiber.Ctx) error {
 	var interestDTO model.InterestDTO
 	if err := c.BodyParser(&interestDTO); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
@@ -26,6 +26,6 @@ func (obj *API) addInterests(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}
 	uid := obj.getUserIDFromToken(c)
-	obj.service.AddInterests(interestDTOs, uint(uid))
+	obj.service.AddInterests(interestDTOs, uid)
 	return c.SendStatus(fiber.StatusCreated)
 }
