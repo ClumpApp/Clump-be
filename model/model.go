@@ -5,13 +5,12 @@ import (
 
 	"github.com/clumpapp/clump-be/utility"
 
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type User struct {
 	gorm.Model
-	UUID           uuid.UUID `gorm:"type:uuid"`
+	UUID           [16]byte `gorm:"type:uuid"`
 	UserName       string
 	UserMail       string
 	Password       string
@@ -24,7 +23,7 @@ type User struct {
 
 type Group struct {
 	gorm.Model
-	UUID           uuid.UUID `gorm:"type:uuid"`
+	UUID           [16]byte `gorm:"type:uuid"`
 	Users          []User
 	UserGroups     []IEUserGroup
 	Messages       []Message
@@ -40,7 +39,7 @@ type IEUserGroup struct {
 
 type Interest struct {
 	gorm.Model
-	UUID             uuid.UUID `gorm:"type:uuid"`
+	UUID             [16]byte `gorm:"type:uuid"`
 	Title            string
 	Picture          string
 	UserInterests    []IEUserInterest
@@ -74,7 +73,7 @@ const (
 
 type Message struct {
 	gorm.Model
-	UUID          uuid.UUID `gorm:"type:uuid"`
+	UUID          [16]byte `gorm:"type:uuid"`
 	UserID        uint
 	User          User
 	GroupID       uint
@@ -83,22 +82,22 @@ type Message struct {
 }
 
 func (obj *User) BeforeCreate(tx *gorm.DB) (err error) {
-	obj.UUID = uuid.New()
+	obj.UUID = utility.NewUUID()
 	return
 }
 
 func (obj *Group) BeforeCreate(tx *gorm.DB) (err error) {
-	obj.UUID = uuid.New()
+	obj.UUID = utility.NewUUID()
 	return
 }
 
 func (obj *Interest) BeforeCreate(tx *gorm.DB) (err error) {
-	obj.UUID = uuid.New()
+	obj.UUID = utility.NewUUID()
 	return
 }
 
 func (obj *Message) BeforeCreate(tx *gorm.DB) (err error) {
-	obj.UUID = uuid.New()
+	obj.UUID = utility.NewUUID()
 	return
 }
 

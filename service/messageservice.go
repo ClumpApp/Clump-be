@@ -13,7 +13,7 @@ func (obj *Service) GetGroupMessages(groupid float64) []model.MessageOutDTO {
 	var messageDTOs []model.MessageOutDTO
 	for _, message := range messages {
 		messageDTOs = append(messageDTOs, model.MessageOutDTO{
-			UUID:          message.UUID.String(),
+			UUID:          utility.ConvertString(message.UUID),
 			UserName:      message.User.UserName,
 			MessageType:   int(message.MessageType),
 			MessageString: message.MessageString,
@@ -34,7 +34,7 @@ func (obj *Service) createMessage(groupid, userid float64, messageString string,
 	var user model.User
 	obj.db.Query(&model.User{}, message.UserID, &user)
 	(*obj.delegate).SendMessage(message.GroupID, model.MessageOutDTO{
-		UUID:          message.UUID.String(),
+		UUID:          utility.ConvertString(message.UUID),
 		UserName:      user.UserName,
 		MessageType:   int(message.MessageType),
 		MessageString: message.MessageString,
