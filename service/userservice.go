@@ -44,17 +44,15 @@ func (obj *Service) GetUser(userid float64) model.UserDTO {
 	return userDTO
 }
 
-func (obj *Service) UpdateUser(id string, userDTO model.UserDTO) {
+func (obj *Service) UpdateUser(id float64, userDTO model.UserDTO) {
 	user := model.User{
-		UserName: userDTO.UserName,
-		UserMail: userDTO.UserMail,
+		UserName:       userDTO.UserName,
+		UserMail:       userDTO.UserMail,
 		ProfilePicture: userDTO.ProfilePicture,
 	}
-	uuid := utility.ConvertUUID(id)
-	obj.db.Update(&model.User{}, &model.User{UUID: uuid}, &user)
+	obj.db.Update(&model.User{}, uint(id), &user)
 }
 
-func (obj *Service) DeleteUser(id string) {
-	uuid := utility.ConvertUUID(id)
-	obj.db.Delete(&model.User{}, &model.User{UUID: uuid})
+func (obj *Service) DeleteUser(id float64) {
+	obj.db.Delete(&model.User{}, uint(id))
 }

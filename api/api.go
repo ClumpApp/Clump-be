@@ -59,9 +59,9 @@ func (obj *API) Run() {
 	api.Post("/messages/video", obj.postVideo)
 	api.Post("/messages/other", obj.postOther)
 
-	api.Put("/users/:"+id, obj.putUser)
+	api.Put("/users", obj.putUser)
 
-	api.Delete("/users/:"+id, obj.deleteUser)
+	api.Delete("/users", obj.deleteUser)
 	api.Delete("/messages/:"+id, obj.deletemessage)
 
 	ws := app.Group(websocketPrefix)

@@ -5,7 +5,6 @@ import (
 )
 
 type UserDTO struct {
-	UUID           string `json:",omitempty"`
 	UserName       string
 	UserMail       string
 	ProfilePicture string

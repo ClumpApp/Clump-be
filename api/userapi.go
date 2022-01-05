@@ -50,13 +50,13 @@ func (obj *API) putUser(c *fiber.Ctx) error {
 	if err := c.BodyParser(&userDTO); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}
-	id := obj.getIDFromParam(c)
+	id := obj.getUserIDFromToken(c)
 	obj.service.UpdateUser(id, userDTO)
 	return c.SendStatus(fiber.StatusOK)
 }
 
 func (obj *API) deleteUser(c *fiber.Ctx) error {
-	id := obj.getIDFromParam(c)
+	id := obj.getUserIDFromToken(c)
 	obj.service.DeleteUser(id)
 	return c.SendStatus(fiber.StatusNoContent)
 }
