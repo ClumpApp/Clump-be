@@ -47,10 +47,11 @@ func (obj *API) Run() {
 
 	api.Use(middleware.GetJWTMiddleware())
 
+	api.Get("/interests", obj.getInterests)
 	api.Get("/messages", obj.getGroupMessages)
 	api.Get("/users", obj.getGroupUsers)
 	api.Get("/users/me", obj.getUser)
-	api.Get("/interests", obj.getInterests)
+	api.Get("/users/assign", obj.assignGroup)
 
 	api.Post("/users/interests", obj.addInterests)
 	api.Post("/messages", obj.postMessage)

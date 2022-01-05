@@ -52,6 +52,10 @@ func (obj *Database) QueryWithPreload(model, query, objects interface{}) {
 	obj.gormDB.Model(model).Preload(clause.Associations).Where(query).Find(objects)
 }
 
+func (obj *Database) Count(model, query interface{}, count *int64) {
+	obj.gormDB.Model(model).Where(query).Count(count)
+}
+
 func (obj *Database) Update(model, query, object interface{}) {
 	obj.gormDB.Model(model).Where(query).Updates(object)
 }

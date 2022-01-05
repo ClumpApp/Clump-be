@@ -9,7 +9,7 @@ func (obj *Service) Login(loginDTO model.LoginDTO) (uint, uint, bool) {
 	var user model.User
 	found := obj.db.Read(&model.User{}, &model.User{UserName: loginDTO.UserName}, &user)
 	if found && utility.CompareHash(loginDTO.Password, user.Password) {
-		return user.ID, user.GroupID, true
+		return user.ID, *user.GroupID, true
 	}
 	return 0, 0, false
 }
@@ -20,8 +20,12 @@ func (obj *Service) SignUp(signupDTO model.SignUpDTO) (uint, bool) {
 	foundName := obj.db.Read(&model.User{}, &model.User{UserName: signupDTO.UserName}, &user)
 	foundMail := obj.db.Read(&model.User{}, &model.User{UserMail: signupDTO.UserMail}, &user)
 	if !foundName && !foundMail {
-		utility.Convert(&signupDTO, &user)
-		obj.db.Create(&model.User{}, &user)
+		newUser := model.User{
+			UserName: signupDTO.UserName,
+			UserMail: signupDTO.UserMail,
+			Password: utility.GetHash(signupDTO.Password),
+		}
+		obj.db.Create(&model.User{}, &newUser)
 		return user.ID, true
 	}
 	return 0, false
@@ -29,7 +33,8 @@ func (obj *Service) SignUp(signupDTO model.SignUpDTO) (uint, bool) {
 
 func (obj *Service) GetGroupUsers(groupid float64) []model.UserDTO {
 	var userDTOs []model.UserDTO
-	obj.db.Query(&model.User{}, &model.User{GroupID: uint(groupid)}, &userDTOs)
+	gid := uint(groupid)
+	obj.db.Query(&model.User{}, &model.User{GroupID: &gid}, &userDTOs)
 	return userDTOs
 }
 
@@ -40,8 +45,11 @@ func (obj *Service) GetUser(userid float64) model.UserDTO {
 }
 
 func (obj *Service) UpdateUser(id string, userDTO model.UserDTO) {
-	var user model.User
-	utility.Convert(&userDTO, &user)
+	user := model.User{
+		UserName: userDTO.UserName,
+		UserMail: userDTO.UserMail,
+		ProfilePicture: userDTO.ProfilePicture,
+	}
 	uuid := utility.ConvertUUID(id)
 	obj.db.Update(&model.User{}, &model.User{UUID: uuid}, &user)
 }

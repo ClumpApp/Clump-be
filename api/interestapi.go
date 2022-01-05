@@ -29,3 +29,9 @@ func (obj *API) addInterests(c *fiber.Ctx) error {
 	obj.service.AddInterests(interestDTOs, uid)
 	return c.SendStatus(fiber.StatusCreated)
 }
+
+func (obj *API) assignGroup(c *fiber.Ctx) error {
+	uid := obj.getUserIDFromToken(c)
+	interestsDTO := obj.service.FindMatchingGroup(uid)
+	return c.JSON(interestsDTO)
+}

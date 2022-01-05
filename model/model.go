@@ -1,12 +1,10 @@
 package model
 
 import (
-	"time"
-
 	"github.com/clumpapp/clump-be/utility"
 
-	"gorm.io/gorm"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -16,7 +14,7 @@ type User struct {
 	UserMail       string
 	Password       string
 	ProfilePicture string
-	GroupID        uint
+	GroupID        *uint
 	UserGroups     []IEUserGroup
 	UserInterests  []IEUserInterest
 	Messages       []Message
@@ -33,9 +31,8 @@ type Group struct {
 
 type IEUserGroup struct {
 	gorm.Model
-	UserID    uint
-	GroupID   uint
-	EntryDate time.Time
+	UserID  uint
+	GroupID uint
 }
 
 type Interest struct {
