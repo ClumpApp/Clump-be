@@ -18,16 +18,8 @@ func (obj *Service) CreateInterest(interestDTO model.InterestDTO) {
 }
 
 func (obj *Service) GetInterests() []model.InterestDTO {
-	var interests []model.Interest
-	obj.db.Query(&model.Interest{}, &model.Interest{InterestID: nil}, &interests)
 	var interestDTOs []model.InterestDTO
-	for _, interest := range interests {
-		interestDTOs = append(interestDTOs, model.InterestDTO{
-			UUID:    utility.ConvertString(interest.UUID),
-			Title:   interest.Title,
-			Picture: interest.Picture,
-		})
-	}
+	obj.db.Query(&model.Interest{}, &model.Interest{SubInterestCount: 0}, &interestDTOs)
 	return interestDTOs
 }
 
