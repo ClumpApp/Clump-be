@@ -32,6 +32,6 @@ func (obj *API) addInterests(c *fiber.Ctx) error {
 
 func (obj *API) assignGroup(c *fiber.Ctx) error {
 	uid := obj.getUserIDFromToken(c)
-	interestsDTO := obj.service.FindMatchingGroup(uid)
-	return c.JSON(interestsDTO)
+	result := obj.service.FindMatchingGroup(uid)
+	return c.JSON(&fiber.Map{"result": result})
 }

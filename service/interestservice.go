@@ -20,6 +20,9 @@ func (obj *Service) CreateInterest(interestDTO model.InterestDTO) {
 func (obj *Service) GetInterests() []model.InterestDTO {
 	var interestDTOs []model.InterestDTO
 	obj.db.Query(&model.Interest{}, &model.Interest{SubInterestCount: 0}, &interestDTOs)
+	for index := range interestDTOs {
+		interestDTOs[index].Picture = utility.GetStorage().GetURL() + interestDTOs[index].Picture
+	}
 	return interestDTOs
 }
 

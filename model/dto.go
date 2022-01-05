@@ -11,9 +11,9 @@ type UserDTO struct {
 }
 
 type InterestDTO struct {
-	UUID    string `json:",omitempty"`
-	Title   string
-	Picture string
+	UUID    string `json:"uuid,omitempty"`
+	Title   string `json:"title"`
+	Picture string `json:"picture"`
 }
 
 type MessageInDTO struct {
