@@ -168,7 +168,7 @@ var midInterests = [][]string{
 	{"love&cry", "brawl&guns", "magic&stuff"},
 	{"love&cry", "brawl&guns", "magic&stuff"},
 	{"love&cry", "brawl&guns", "magic&stuff", "young adult"},
-	{"guitar&bass", "rythm&beat", "strings&brass"},
+	{"guitar&bass", "rhythm&beat", "strings&brass"},
 	{"fundamental sciences", "engineering"},
 	{"2d", "3d"},
 	{"broadcast media", "print media"},

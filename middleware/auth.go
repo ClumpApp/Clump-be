@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	Group      = "group"
-	User       = "user"
+	group      = "group"
+	user       = "user"
 	ContextKey = "account"
 )
 
@@ -22,10 +22,10 @@ func GetJWTMiddleware() interface{} {
 	})
 }
 
-func CreateToken(user, group uint) string {
+func CreateToken(userid, groupid uint) string {
 	claims := jwt.MapClaims{
-		User:  user,
-		Group: group,
+		user:  userid,
+		group: groupid,
 		"exp": time.Now().Add(time.Hour * 72).Unix(),
 	}
 
@@ -40,13 +40,13 @@ func CreateToken(user, group uint) string {
 }
 
 func GetGroupID(token interface{}) float64 {
-	user := token.(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
-	return claims[Group].(float64)
+	jwtToken := token.(*jwt.Token)
+	claims := jwtToken.Claims.(jwt.MapClaims)
+	return claims[group].(float64)
 }
 
 func GetUserID(token interface{}) float64 {
-	user := token.(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
-	return claims[User].(float64)
+	jwtToken := token.(*jwt.Token)
+	claims := jwtToken.Claims.(jwt.MapClaims)
+	return claims[user].(float64)
 }
