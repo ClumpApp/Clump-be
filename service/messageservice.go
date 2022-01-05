@@ -63,13 +63,13 @@ func (obj *Service) CreateOther(groupid, userid float64, name string, file io.Re
 	obj.createMedia(groupid, userid, name, file, model.Other)
 }
 
-func (obj *Service) DeleteMessage(uuid string, userid float64) {
-	uuID := utility.ConvertUUID(uuid)
+func (obj *Service) DeleteMessage(id string, userid float64) {
+	uuid := utility.ConvertUUID(id)
 	userID := uint(userid)
 	var message model.Message
-	found := obj.db.Read(&model.Message{}, &model.Message{UUID: uuID, UserID: userID}, &message)
+	found := obj.db.Read(&model.Message{}, &model.Message{UUID: uuid, UserID: userID}, &message)
 	if found {
-		if message.MessageType == model.Image || message.MessageType == model.Video || message.MessageType == model.Other {
+		if message.MessageType != model.Undefined && message.MessageType != model.Text {
 			obj.deleteMedia(message.MessageString)
 		}
 		obj.db.Delete(&model.Message{}, message.ID)

@@ -55,7 +55,7 @@ func (obj *API) postVideo(c *fiber.Ctx) error {
 	}
 	gid := obj.getGroupIDFromToken(c)
 	uid := obj.getUserIDFromToken(c)
-	obj.service.CreateImage(gid, uid, data.Filename, file)
+	obj.service.CreateVideo(gid, uid, data.Filename, file)
 	return c.SendStatus(fiber.StatusCreated)
 }
 
@@ -70,7 +70,7 @@ func (obj *API) postOther(c *fiber.Ctx) error {
 	}
 	gid := obj.getGroupIDFromToken(c)
 	uid := obj.getUserIDFromToken(c)
-	obj.service.CreateImage(gid, uid, data.Filename, file)
+	obj.service.CreateOther(gid, uid, data.Filename, file)
 	return c.SendStatus(fiber.StatusCreated)
 }
 

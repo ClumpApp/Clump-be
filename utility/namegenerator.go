@@ -31,7 +31,7 @@ func GetNameGen() *namegen {
 	return instanceNameGen
 }
 
-func (obj namegen) RandStringBytesMaskImprSrcSB() string {
+func (obj namegen) GenerateName() string {
 	sb := strings.Builder{}
 	sb.Grow(16)
 	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!

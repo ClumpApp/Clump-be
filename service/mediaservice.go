@@ -10,7 +10,7 @@ import (
 func (obj *Service) uploadMedia(name string, data io.ReadSeekCloser) string {
 	dot := strings.LastIndex(name, ".")
 	extension := name[dot+1:]
-	newName := utility.GetNameGen().RandStringBytesMaskImprSrcSB() + extension
+	newName := utility.GetNameGen().GenerateName() + extension
 	utility.GetStorage().Upload(newName, data)
 	return newName
 }
