@@ -10,15 +10,17 @@ import (
 )
 
 const (
-	group      = "group"
-	user       = "user"
-	ContextKey = "account"
+	group       = "group"
+	user        = "user"
+	ContextKey  = "account"
+	tokenLookup = "header:Authorization,query:token"
 )
 
 func GetJWTMiddleware() interface{} {
 	return jwtware.New(jwtware.Config{
-		ContextKey: ContextKey,
-		SigningKey: []byte(utility.GetConfig().GetJWTKey()),
+		ContextKey:  ContextKey,
+		TokenLookup: tokenLookup,
+		SigningKey:  []byte(utility.GetConfig().GetJWTKey()),
 	})
 }
 

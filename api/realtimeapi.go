@@ -27,14 +27,20 @@ func (obj *API) websocket() func(*fiber.Ctx) error {
 		id := c.Locals(id).(float64)
 		gid := uint(id)
 
+		newConn := make(chan model.MessageOutDTO)
 		conns, ok := connMap.Load(gid)
 		if ok {
-			conns := conns.([]*websocket.Conn)
-			conns = append(conns, c)
+			conns := conns.([]chan model.MessageOutDTO)
+			conns = append(conns, newConn)
 			connMap.Store(gid, conns)
 		} else {
-			conns = []*websocket.Conn{c}
+			conns = []chan model.MessageOutDTO{newConn}
 			connMap.Store(gid, conns)
+		}
+
+		for {
+			message := <-newConn
+			c.WriteJSON(message)
 		}
 	})
 }
@@ -43,8 +49,8 @@ func (obj *API) SendMessage(groupID uint, message model.MessageOutDTO) {
 	// Send meesage to all websockets for given group
 	conns, ok := connMap.Load(groupID)
 	if ok {
-		for _, conn := range conns.([]*websocket.Conn) {
-			conn.WriteJSON(message)
+		for _, conn := range conns.([]chan model.MessageOutDTO) {
+			conn <- message
 		}
 	}
 }

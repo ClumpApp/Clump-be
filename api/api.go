@@ -64,11 +64,11 @@ func (obj *API) Run() {
 	api.Delete("/users", obj.deleteUser)
 	api.Delete("/messages/:"+id, obj.deletemessage)
 
-	ws := app.Group(websocketPrefix)
+	ws := api.Group(websocketPrefix)
 
 	ws.Use(obj.setup)
 
-	ws.Get("/connect", obj.websocket())
+	ws.Get("/messages", obj.websocket())
 
 	app.Use(obj.notFound)
 
