@@ -17,12 +17,12 @@ func (obj *Service) Login(loginDTO model.LoginDTO) (uint, uint, bool) {
 //this version doesnt have interests (will be updated)
 func (obj *Service) SignUp(signupDTO model.SignUpDTO) (uint, bool) {
 	var user model.User
-	foundName := obj.db.Read(&model.User{}, &model.User{UserName: signupDTO.UserName}, &user)
-	foundMail := obj.db.Read(&model.User{}, &model.User{UserMail: signupDTO.UserMail}, &user)
+	foundName := obj.db.Read(&model.User{}, &model.User{UserName: signupDTO.Username}, &user)
+	foundMail := obj.db.Read(&model.User{}, &model.User{UserMail: signupDTO.Email}, &user)
 	if !foundName && !foundMail {
 		newUser := model.User{
-			UserName: signupDTO.UserName,
-			UserMail: signupDTO.UserMail,
+			UserName: signupDTO.Username,
+			UserMail: signupDTO.Email,
 			Password: utility.GetHash(signupDTO.Password),
 		}
 		obj.db.Create(&model.User{}, &newUser)

@@ -34,7 +34,7 @@ type LoginDTO struct {
 }
 
 type SignUpDTO struct {
-	UserName string `json:"username"`
-	UserMail string `json:"email"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
