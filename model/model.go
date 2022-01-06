@@ -98,10 +98,3 @@ func (obj *Message) BeforeCreate(tx *gorm.DB) (err error) {
 	obj.UUID = utility.NewUUID()
 	return
 }
-
-func (obj *Message) AfterFind(tx *gorm.DB) (err error) {
-	if obj.MessageType != Undefined && obj.MessageType != Text {
-		obj.MessageString = utility.GetStorage().GetURL() + obj.MessageString
-	}
-	return
-}
