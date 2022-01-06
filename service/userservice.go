@@ -26,7 +26,7 @@ func (obj *Service) SignUp(signupDTO model.SignUpDTO) (uint, bool) {
 			Password: utility.GetHash(signupDTO.Password),
 		}
 		obj.db.Create(&model.User{}, &newUser)
-		return user.ID, true
+		return newUser.ID, true
 	}
 	return 0, false
 }
