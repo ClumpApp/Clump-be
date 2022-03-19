@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	azureStorageAccountConnStr = "CUSTOMCONNSTR_ASA"
-	jwtEncryptionKey           = "APPSETTING_JWT"
-	postgreSQLConnStr          = "POSTGRESQLCONNSTR_AD"
+	mediaFolderPath   = "MEDIAFOLDERPATH"
+	jwtEncryptionKey  = "APPSETTING_JWT"
+	postgreSQLConnStr = "POSTGRESQLCONNSTR"
 )
 
 type config struct {
@@ -23,7 +23,7 @@ var instanceConfig *config
 func GetConfig() *config {
 	onceConfig.Do(func() {
 		db, _ := os.LookupEnv(postgreSQLConnStr)
-		storage, _ := os.LookupEnv(azureStorageAccountConnStr)
+		storage, _ := os.LookupEnv(mediaFolderPath)
 		key, _ := os.LookupEnv(jwtEncryptionKey)
 
 		instanceConfig = &config{db, storage, key}

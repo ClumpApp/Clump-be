@@ -26,9 +26,9 @@ func New(service *service.Service) *API {
 func (obj *API) Run() {
 	app := fiber.New()
 
-	app.Use(middleware.GetCORSMiddleware())
+	app.Static("/", "./public")
 
-	app.Get("/", func(c *fiber.Ctx) error {
+	app.Get("/health", func(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusOK)
 	})
 
