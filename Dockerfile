@@ -6,12 +6,12 @@ FROM golang:1.17 AS build
 WORKDIR /go/src/app
 COPY . .
 
-RUN go build -ldflags="-s" -o /clump 
+RUN go build -ldflags="-s -w" -o /clump 
 
 ##
 ## Containerize
 ##
-FROM ubuntu:20.04
+FROM busybox:1.34.1
 
 WORKDIR /
 COPY --from=build /clump /clump
