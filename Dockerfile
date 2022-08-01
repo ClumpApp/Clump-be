@@ -1,7 +1,7 @@
 ##
 ## Build
 ##
-FROM golang:1.17 AS build
+FROM golang:1.18.4 AS build
 
 WORKDIR /go/src/app
 COPY . .
