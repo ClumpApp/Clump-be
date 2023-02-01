@@ -11,7 +11,7 @@ RUN go build -ldflags="-s" -o /clump
 ##
 ## Containerize
 ##
-FROM ubuntu:20.04
+FROM ubuntu:23.04
 
 WORKDIR /
 COPY --from=build /clump /clump
